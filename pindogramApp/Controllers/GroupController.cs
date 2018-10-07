@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using pindogramApp.Model;
 
@@ -10,7 +8,7 @@ namespace pindogramApp.Controllers
     [Route("api/[controller]")]
     public class GroupController : Controller
     {
-        private PindogramDataContext _pindogramDataContext;
+        private readonly PindogramDataContext _pindogramDataContext;
 
         public GroupController(PindogramDataContext pindogramDataContext)
         {
