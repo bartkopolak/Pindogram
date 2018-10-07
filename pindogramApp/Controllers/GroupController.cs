@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using pindogramApp.Model;
 
+
 namespace pindogramApp.Controllers
 {
     [Route("api/[controller]")]
@@ -22,6 +23,10 @@ namespace pindogramApp.Controllers
             return _pindogramDataContext.Groups.FirstOrDefault(x=> x.Id == id);
         }
 
+        /// <summary>
+        /// Com
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("/api/[controller]/GetAll")]
         public IEnumerable<Group> GetAll()
