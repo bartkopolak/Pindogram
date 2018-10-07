@@ -30,8 +30,6 @@ namespace pindogramApp
                     Title = "Pindogram API",
                     Description = "Swagger to Pindogram app"
                 });
-                var xmlPath = System.AppDomain.CurrentDomain.BaseDirectory + @"pindogramApp.xml";
-                x.IncludeXmlComments(xmlPath);
             });
 
             var connectionstring = @"Server=(localdb)\MSSQLLocalDB;Database=PindogramDB;Trusted_Connection=True;";
