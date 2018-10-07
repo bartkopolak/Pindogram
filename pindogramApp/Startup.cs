@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using pindogramApp.Model;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace pindogramApp
 {
@@ -22,6 +23,16 @@ namespace pindogramApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSwaggerGen(x =>
+            {
+                x.SwaggerDoc("v1", new Info
+                {
+                    Title = "Pindogram API",
+                    Description = "Swagger to Pindogram app"
+                });
+                var xmlPath = System.AppDomain.CurrentDomain.BaseDirectory + @"pindogramApp.xml";
+                x.IncludeXmlComments(xmlPath);
+            });
 
             var connectionstring = @"Server=(localdb)\MSSQLLocalDB;Database=PindogramDB;Trusted_Connection=True;";
 
@@ -52,6 +63,8 @@ namespace pindogramApp
 
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+            app.UseSwagger();
+            app.UseSwaggerUI(x=> x.SwaggerEndpoint("/swagger/v1/swagger.json", "Pindogram API"));
 
             app.UseMvc(routes =>
             {
