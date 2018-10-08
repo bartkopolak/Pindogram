@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace pindogramApp.Model
 {
+    /// <summary>
+    /// Static class to fill empty databse with initial data
+    /// </summary>
     public static class SeedData
     {
         public static void SetData(this PindogramDataContext context)
