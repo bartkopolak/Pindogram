@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace pindogramApp.Model
+namespace pindogramApp.Entities
 {
     /// <summary>
     /// Static class to fill empty databse with initial data
