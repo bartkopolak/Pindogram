@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using pindogramApp.Model;
+using pindogramApp.Entities;
 
 
 namespace pindogramApp.Controllers
