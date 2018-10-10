@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 
-namespace pindogramApp.Model
+namespace pindogramApp.Entities
 {
     public class PindogramDataContext : DbContext
     {
@@ -11,5 +11,6 @@ namespace pindogramApp.Model
         }
 
         public DbSet<Group> Groups { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }
