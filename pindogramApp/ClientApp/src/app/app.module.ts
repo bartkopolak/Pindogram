@@ -1,26 +1,26 @@
+import { AppComponent } from './app.component';
+import { ErrorComponent } from './layouts/error/error.component';
+import { NavbarComponent } from './layouts/navbar/navbar.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
-
-import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
+import { AppRoutingModule } from './app-routing.module';
+import { LoginModule } from './login/login.module';
+import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
+import { MainLayoutModule } from './layouts/main-layout/main-layout.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
+    NavbarComponent,
+    MainLayoutComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
-    HttpClientModule,
-    FormsModule,
-    RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' }
-    ])
+    LoginModule,
+    MainLayoutModule,
+    AppRoutingModule
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
