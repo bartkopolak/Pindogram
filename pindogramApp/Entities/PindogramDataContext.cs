@@ -13,6 +13,6 @@ namespace pindogramApp.Entities
 
         public DbSet<Group> Groups { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<pindogramApp.Entities.Meme> Meme { get; set; }
+        public DbSet<Meme> Meme { get; set; }
     }
 }
