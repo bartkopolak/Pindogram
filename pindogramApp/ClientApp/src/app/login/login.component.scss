@@ -1,0 +1,97 @@
+#background-vid {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+}
+
+#myVideo {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    z-index: 0;
+}
+
+.register-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    opacity: 0;
+    transition: all 0.2s ease-in;
+    transform: translate(-50%, -50%);
+    width: 550px;
+    background: rgba(0, 0, 0, 0.37);
+    border: 2px solid white;
+    z-index: 1;
+    .active {
+        top: 40%;
+        opacity: 1;
+    }
+}
+
+.bottom-section {
+    .page-title {
+        letter-spacing: 4px;
+        margin: 5px 0px 10px 0px;
+    }
+    .page-description {
+        margin-bottom: 25px;
+    }
+    position: relative;
+    color: #ffffff;
+    position: fixed;
+    padding: 25px 100px;
+    bottom: 0;
+    height: 200px;
+    background: rgba(2, 2, 2, 0.733);
+    width: 100%;
+    .btn {
+        color: #000000;
+    }
+    .img-pepe {
+        position: absolute;
+        bottom: 0;
+        right: -10px;
+        width: 230px;
+    }
+    .buttons-wrapper {
+        .btn {
+            cursor: pointer;
+            margin-right: 10px;
+            border-radius: 0px;
+            text-decoration: none;
+            padding: 11px 18px;
+            font-size: 12px;
+            line-height: 19px;
+            text-transform: uppercase;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            letter-spacing: 2px;
+            -webkit-transition: all .4s ease-in-out;
+            -moz-transition: all .4s ease-in-out;
+            -ms-transition: all .4s ease-in-out;
+            -o-transition: all .4s ease-in-out;
+            transition: all .4s ease-in-out;
+            &:hover {
+                -webkit-transition: all .4s ease-in-out;
+                -moz-transition: all .4s ease-in-out;
+                -ms-transition: all .4s ease-in-out;
+                -o-transition: all .4s ease-in-out;
+                transition: all .4s ease-in-out;
+            }
+        }
+        .btn-white {
+            border: solid 2px #fff;
+            background: transparent;
+            color: #fff;
+            width: 160px;
+            height: 40px;
+            &:hover {
+                border: solid 2px #fff;
+                background: #fff;
+                color: #1f1f1f;
+            }
+        }
+    }
+}
