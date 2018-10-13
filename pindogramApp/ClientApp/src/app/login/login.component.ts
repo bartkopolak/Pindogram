@@ -25,11 +25,11 @@ export class LoginComponent implements OnInit {
   }
 
   openLogin() {
-    this.modalService.open(LoginModalComponent as Component);
+    this.modalService.open(LoginModalComponent as Component, {centered: true});
   }
 
   openRegister() {
-    this.modalService.open(RegisterModalComponent as Component);
+    this.modalService.open(RegisterModalComponent as Component, {centered: true});
   }
 
 }

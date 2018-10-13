@@ -1,3 +1,4 @@
+import { AlertComponent } from './alert/alert.component';
 import { JwtInterceptor } from './jwt.interceptor';
 import { ErrorInterceptor } from './error.interceptor';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -13,11 +14,15 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
       CommonModule,
       HttpClientModule
     ],
+    declarations: [
+      AlertComponent
+    ],
     providers: [
       { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
       { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     ],
     exports: [
+      AlertComponent,
       NgbModule,
       FormsModule,
       ReactiveFormsModule,

@@ -3,3 +3,7 @@ export * from './auth.guard';
 export * from './authentication.service';
 export * from './error.interceptor';
 export * from './jwt.interceptor';
+export * from './alert/alert.component';
+export * from './alert/alert.service';
+export * from './users/user';
+export * from './users/users.service';

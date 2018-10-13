@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { LoginModule } from './login/login.module';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { MainLayoutModule } from './layouts/main-layout/main-layout.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { MainLayoutModule } from './layouts/main-layout/main-layout.module';
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     LoginModule,
     MainLayoutModule,
-    AppRoutingModule
+    AppRoutingModule,
+    SharedModule
   ],
   bootstrap: [AppComponent]
 })
