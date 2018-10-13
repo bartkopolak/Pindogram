@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using pindogramApp.Entities;
 using pindogramApp.Helpers;
 using System.Linq;
+using AutoMapper;
+using pindogramApp.Dtos;
 using pindogramApp.Services.Interfaces;
 
 namespace pindogramApp.Services
 {
     public class UserService : IUserService
     {
-        private PindogramDataContext _context;
+        private readonly PindogramDataContext _context;
+        private readonly IMapper _mapper;
 
         public UserService(PindogramDataContext context)
         {
@@ -31,6 +34,8 @@ namespace pindogramApp.Services
             if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
                 return null;
 
+            user.Group = _context.Groups.FirstOrDefault(x => x.Id == user.GroupId);
+            
             // authentication successful
             return user;
         }
