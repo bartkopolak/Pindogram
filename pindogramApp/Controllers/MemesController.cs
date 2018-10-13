@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using pindogramApp.Entities;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using AutoMapper;
 using pindogramApp.Services.Interfaces;
 using pindogramApp.Helpers;
-using pindogramApp.Dtos;
 
 namespace pindogramApp.Controllers
 {
@@ -20,10 +16,10 @@ namespace pindogramApp.Controllers
     [ApiController]
     public class MemesController : ControllerBase
     {
-        private IMemeService _memeService;
-        private IMapper _mapper;
+        private readonly IMemeService _memeService;
+        private readonly IMapper _mapper;
 
-        public MemesController(PindogramDataContext context, IMapper mapper, IMemeService MemeService)
+        public MemesController(IMapper mapper, IMemeService MemeService)
         {
             _memeService = MemeService;
         }
@@ -32,7 +28,7 @@ namespace pindogramApp.Controllers
         public async Task<IActionResult> Create(string title)
         {
 
-            User loggedUser = _memeService.getLoggedUser(this.User.FindFirst(ClaimTypes.Name).Value);
+            User loggedUser = _memeService.GetLoggedUser(this.User.FindFirst(ClaimTypes.Name).Value);
             if (loggedUser == null)
             {
                 return BadRequest(new { message = "Not logged in" });
@@ -57,7 +53,7 @@ namespace pindogramApp.Controllers
         [HttpPost("upvoteMeme")]
         public async Task<IActionResult> Upvote(int memeId)
         {
-            User loggedUser = _memeService.getLoggedUser(this.User.FindFirst(ClaimTypes.Name).Value);
+            User loggedUser = _memeService.GetLoggedUser(this.User.FindFirst(ClaimTypes.Name).Value);
             try
             {
                 _memeService.Upvote(memeId, loggedUser);
@@ -74,7 +70,7 @@ namespace pindogramApp.Controllers
         [HttpPost("downvoteMeme")]
         public async Task<IActionResult> Downvote(int memeId)
         {
-            User loggedUser = _memeService.getLoggedUser(this.User.FindFirst(ClaimTypes.Name).Value);
+            User loggedUser = _memeService.GetLoggedUser(this.User.FindFirst(ClaimTypes.Name).Value);
             try
             {
                 _memeService.Downvote(memeId, loggedUser);
@@ -152,7 +148,5 @@ namespace pindogramApp.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-
-        
     }
 }

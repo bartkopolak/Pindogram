@@ -14,6 +14,6 @@ namespace pindogramApp.Services.Interfaces
         Meme GetById(int id);
         void Delete(int id);
         int GetRate(int memeId);
-        User getLoggedUser(string strAutId);
+        User GetLoggedUser(string strAutId);
     }
 }

@@ -3,17 +3,13 @@ using pindogramApp.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
 using pindogramApp.Helpers;
 
 namespace pindogramApp.Services
 {
     public class MemeService : IMemeService
     {
-        private PindogramDataContext _context;
+        private readonly PindogramDataContext _context;
 
         public MemeService(PindogramDataContext context)
         {
@@ -27,7 +23,7 @@ namespace pindogramApp.Services
                 throw new AppException("Requested meme does not exist.");
             MemeRate rate = _context.MemeRates.FirstOrDefault(x => x.Meme == meme && x.User == user);
             if (rate == null)
-                rate = createMemeLike(meme, user);
+                rate = CreateMemeLike(meme, user);
             rate.isUpvote = false;
             _context.MemeRates.Update(rate);
             _context.SaveChanges();
@@ -40,7 +36,7 @@ namespace pindogramApp.Services
                 throw new AppException("Requested meme does not exist.");
             MemeRate rate = _context.MemeRates.FirstOrDefault(x => x.Meme == meme && x.User == user);
             if (rate == null)
-                rate = createMemeLike(meme, user);
+                rate = CreateMemeLike(meme, user);
             rate.isUpvote = true;
             _context.MemeRates.Update(rate);
             _context.SaveChanges();
@@ -70,7 +66,7 @@ namespace pindogramApp.Services
 
         //helpers
 
-        private MemeRate createMemeLike(Meme meme, User user)
+        private MemeRate CreateMemeLike(Meme meme, User user)
         {
 
             MemeRate newLike = new MemeRate();
@@ -113,7 +109,7 @@ namespace pindogramApp.Services
             _context.SaveChanges();
         }
 
-        public User getLoggedUser(string strAutId)
+        public User GetLoggedUser(string strAutId)
         {
             int autId = int.Parse(strAutId);
             User loggedUser = _context.Users.First(x => x.Id == autId);
