@@ -60,6 +60,7 @@ namespace pindogramApp.Services
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 
+            user.Group = _context.Groups.LastOrDefault();
             _context.Users.Add(user);
             _context.SaveChanges();
 

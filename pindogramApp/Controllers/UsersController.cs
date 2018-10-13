@@ -21,17 +21,20 @@ namespace pindogramApp.Controllers
     public class UsersController : Controller
     {
         private IUserService _userService;
+        private IGroupService _groupService;
         private IMapper _mapper;
         private readonly AppSettings _appSettings;
 
         public UsersController(
             IUserService userService,
             IMapper mapper,
-            IOptions<AppSettings> appSettings)
+            IOptions<AppSettings> appSettings,
+            IGroupService groupService)
         {
             _userService = userService;
             _mapper = mapper;
             _appSettings = appSettings.Value;
+            _groupService = groupService;
         }
 
         [AllowAnonymous]
@@ -40,6 +43,7 @@ namespace pindogramApp.Controllers
         {
             var user = _userService.Authenticate(userDto.Username, userDto.Password);
 
+            user.Group = _groupService.GetById(user.GroupId);
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
 
@@ -49,11 +53,12 @@ namespace pindogramApp.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                    new Claim(ClaimTypes.Name, user.Id.ToString()),
+                    new Claim(user.Group.Name, ""), 
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
+                };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
 
@@ -74,7 +79,6 @@ namespace pindogramApp.Controllers
         {
             // map dto to entity
             var user = _mapper.Map<User>(userDto);
-
             try
             {
                 // save 
@@ -88,6 +92,7 @@ namespace pindogramApp.Controllers
             }
         }
 
+        [Authorize(Policy = "ADMIN")]
         [HttpGet]
         public IActionResult GetAll()
         {
