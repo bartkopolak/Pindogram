@@ -23,7 +23,7 @@ namespace pindogramApp.Services
                 throw new AppException("Requested meme does not exist.");
             MemeRate rate = _context.MemeRates.FirstOrDefault(x => x.Meme == meme && x.User == user);
             if (rate == null)
-                rate = CreateMemeLike(meme, user);
+                rate = CreateMemeRate(meme, user);
             rate.isUpvote = false;
             _context.MemeRates.Update(rate);
             _context.SaveChanges();
@@ -36,7 +36,7 @@ namespace pindogramApp.Services
                 throw new AppException("Requested meme does not exist.");
             MemeRate rate = _context.MemeRates.FirstOrDefault(x => x.Meme == meme && x.User == user);
             if (rate == null)
-                rate = CreateMemeLike(meme, user);
+                rate = CreateMemeRate(meme, user);
             rate.isUpvote = true;
             _context.MemeRates.Update(rate);
             _context.SaveChanges();
@@ -66,7 +66,7 @@ namespace pindogramApp.Services
 
         //helpers
 
-        private MemeRate CreateMemeLike(Meme meme, User user)
+        private MemeRate CreateMemeRate(Meme meme, User user)
         {
 
             MemeRate newLike = new MemeRate();
