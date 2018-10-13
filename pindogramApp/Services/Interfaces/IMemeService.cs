@@ -7,9 +7,13 @@ namespace pindogramApp.Services.Interfaces
 {
     public interface IMemeService
     {
-        Meme Post(string title, User author);
+        Meme Create(string title, User author);
         void Upvote(int memeId, User user);
         void Downvote(int memeId, User user);
+        IEnumerable<Meme> GetAll();
+        Meme GetById(int id);
+        void Delete(int id);
         int GetRate(int memeId);
+        User getLoggedUser(string strAutId);
     }
 }

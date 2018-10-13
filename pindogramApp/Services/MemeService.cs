@@ -47,7 +47,7 @@ namespace pindogramApp.Services
             
         }
 
-        public Meme Post(string title, User author)
+        public Meme Create(string title, User author)
         {
             Meme meme = new Meme();
             meme.Title = title;
@@ -81,6 +81,43 @@ namespace pindogramApp.Services
             return newLike;
         }
 
- 
+        public IEnumerable<Meme> GetAll()
+        {
+            return _context.Memes;
+        }
+
+        public Meme GetById(int id)
+        {
+            var meme = _context.Memes.Find(id);
+            if (meme == null)
+            {
+                throw new AppException("Requested meme does not exist.");
+            }
+            return meme;
+        }
+
+        public void Delete(int id)
+        {
+            var meme = _context.Memes.Find(id);
+            if (meme == null)
+            {
+                throw new AppException("Requested meme does not exist.");
+            }
+            var rates = _context.MemeRates.Where(x => x.MemeId == id);
+            foreach(MemeRate mr in rates)
+            {
+                _context.MemeRates.Remove(mr);
+            }
+            
+            _context.Memes.Remove(meme);
+            _context.SaveChanges();
+        }
+
+        public User getLoggedUser(string strAutId)
+        {
+            int autId = int.Parse(strAutId);
+            User loggedUser = _context.Users.First(x => x.Id == autId);
+            return loggedUser;
+        }
     }
 }
