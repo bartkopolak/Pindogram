@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pindogramApp.Entities;
 
 namespace pindogramApp.Migrations
 {
     [DbContext(typeof(PindogramDataContext))]
-    partial class PindogramDataContextModelSnapshot : ModelSnapshot
+    [Migration("20181012193246_GroupUser")]
+    partial class GroupUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,46 +33,6 @@ namespace pindogramApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Groups");
-                });
-
-            modelBuilder.Entity("pindogramApp.Entities.Meme", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AuthorId");
-
-                    b.Property<DateTime>("DateAdded");
-
-                    b.Property<string>("Title");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AuthorId");
-
-                    b.ToTable("Memes");
-                });
-
-            modelBuilder.Entity("pindogramApp.Entities.MemeRate", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("MemeId");
-
-                    b.Property<int?>("UserId");
-
-                    b.Property<bool>("isUpvote");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MemeId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("MemeRates");
                 });
 
             modelBuilder.Entity("pindogramApp.Entities.User", b =>
@@ -97,25 +59,6 @@ namespace pindogramApp.Migrations
                     b.HasIndex("GroupId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("pindogramApp.Entities.Meme", b =>
-                {
-                    b.HasOne("pindogramApp.Entities.User", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("pindogramApp.Entities.MemeRate", b =>
-                {
-                    b.HasOne("pindogramApp.Entities.Meme", "Meme")
-                        .WithMany()
-                        .HasForeignKey("MemeId");
-
-                    b.HasOne("pindogramApp.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("pindogramApp.Entities.User", b =>

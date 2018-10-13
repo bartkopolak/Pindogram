@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using pindogramApp.Dtos;
 using pindogramApp.Entities;
 
 namespace pindogramApp.Services.Interfaces
