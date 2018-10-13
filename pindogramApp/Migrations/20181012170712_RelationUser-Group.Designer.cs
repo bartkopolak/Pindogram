@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pindogramApp.Entities;
 
 namespace pindogramApp.Migrations
 {
     [DbContext(typeof(PindogramDataContext))]
-    partial class PindogramDataContextModelSnapshot : ModelSnapshot
+    [Migration("20181012170712_RelationUser-Group")]
+    partial class RelationUserGroup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,7 +43,7 @@ namespace pindogramApp.Migrations
 
                     b.Property<string>("FirstName");
 
-                    b.Property<int>("GroupId");
+                    b.Property<int?>("GroupId");
 
                     b.Property<string>("LastName");
 
@@ -62,9 +64,8 @@ namespace pindogramApp.Migrations
             modelBuilder.Entity("pindogramApp.Entities.User", b =>
                 {
                     b.HasOne("pindogramApp.Entities.Group", "Group")
-                        .WithMany("User")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("GroupId");
                 });
 #pragma warning restore 612, 618
         }

@@ -93,8 +93,18 @@ namespace pindogramApp
                     };
                 });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ADMIN",
+                    policy => policy.RequireClaim("ADMIN"));
+
+                options.AddPolicy("USER",
+                    policy => policy.RequireClaim("USER"));
+            });
+
             // configure DI for application services
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IGroupService, GroupService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
