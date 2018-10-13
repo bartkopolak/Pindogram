@@ -5,7 +5,8 @@ import { LoginComponent } from './login.component';
 import { LOGIN_ROUTE } from './login.route';
 import { SharedModule } from '../shared/shared.module';
 import { RegisterModalComponent } from './register-modal/register-modal.component';
-
+import { UserService } from '../shared/users/users.service';
+import { AlertService } from '../shared/alert/alert.service';
 @NgModule({
   imports: [
     RouterModule.forRoot([ LOGIN_ROUTE ]),
@@ -19,6 +20,10 @@ import { RegisterModalComponent } from './register-modal/register-modal.componen
   entryComponents: [
     LoginModalComponent,
     RegisterModalComponent
+   ],
+   providers: [
+    UserService,
+    AlertService
    ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
