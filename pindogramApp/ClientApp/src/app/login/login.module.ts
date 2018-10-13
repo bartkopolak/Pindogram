@@ -9,7 +9,7 @@ import { RegisterModalComponent } from './register-modal/register-modal.componen
 @NgModule({
   imports: [
     RouterModule.forRoot([ LOGIN_ROUTE ]),
-      SharedModule
+    SharedModule
   ],
   declarations: [
     LoginComponent,

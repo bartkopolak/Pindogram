@@ -1,3 +1,5 @@
+import './vendor.ts';
+
 import { AppComponent } from './app.component';
 import { ErrorComponent } from './layouts/error/error.component';
 import { NavbarComponent } from './layouts/navbar/navbar.component';

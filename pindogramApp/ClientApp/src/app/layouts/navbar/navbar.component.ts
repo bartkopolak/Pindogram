@@ -1,3 +1,4 @@
+import { AuthGuard } from './../../shared/auth.guard';
 import { Component } from '@angular/core';
 
 @Component({
@@ -7,4 +8,12 @@ import { Component } from '@angular/core';
         'navbar.scss'
     ]
 })
-export class NavbarComponent {}
+export class NavbarComponent {
+
+  constructor(private authenticate: AuthGuard) {}
+
+  isAuthenticated() {
+    return this.authenticate.isAuthenticated();
+  }
+
+}
