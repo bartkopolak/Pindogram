@@ -104,6 +104,7 @@ namespace pindogramApp
 
             // configure DI for application services
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IMemeService, MemeService>();
             services.AddScoped<IGroupService, GroupService>();
         }
 
