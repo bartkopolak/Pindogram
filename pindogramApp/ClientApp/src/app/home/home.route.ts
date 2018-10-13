@@ -1,3 +1,4 @@
+import { AuthGuard } from './../shared/auth.guard';
 import { Route } from '@angular/router';
 import { HomeComponent } from './home.component';
 
@@ -7,5 +8,6 @@ export const HOME_ROUTE: Route = {
     data: {
         authorities: [],
         pageTitle: 'Home page'
-    }
+    },
+    canActivate: [AuthGuard]
 };
