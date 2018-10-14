@@ -1,2 +1,28 @@
-<h1>Home page</h1>
 <button (click)="logout()"> Wyloguj </button>
+<!-- <div class="image-upload">
+    <input name="imageUrl" type="file" accept="image/*" (change)="handleInputChange($event)" />
+</div> -->
+<div class="home-wrapper">
+  <div class="memes-container">
+    <div class="meme-wrap" *ngFor="let meme of memes; trackBy: trackId">
+      <h4>{{meme.title}}</h4>
+      <img [src]="'data:image/jpeg;base64,' + meme.image" width="500px" alt="img"/>
+      <p>
+        Autor: {{meme.author.username}},
+        punkty: {{meme.likes}}
+        dodano: {{meme.dateAdded | date: 'd-M-y, HH:mm'}}
+      </p>
+      <div class="btn-rates">
+        <button type="button" class="btn btn-light">
+          UP
+        </button>
+        <button type="button" class="btn btn-light">
+          DOWN
+        </button>
+        <button type="button" class="btn btn-danger">
+          DEL
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
