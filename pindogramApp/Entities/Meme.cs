@@ -11,6 +11,7 @@ namespace pindogramApp.Entities
         public int Id { get; set; }
         public string Title { get; set; }
         public DateTime DateAdded { get; set; }
+        public byte[] Image { get; set; }
         [ForeignKey("Author")]
         public int AuthorId { get; set; }
         public User Author { get; set; }
