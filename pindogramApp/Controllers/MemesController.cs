@@ -103,7 +103,15 @@ namespace pindogramApp.Controllers
                     DateAdded = meme.DateAdded,
                     Id = meme.Id,
                     Title = meme.Title,
-                    Image = Convert.ToBase64String(meme.Image)
+                    Image = Convert.ToBase64String(meme.Image),
+                    Likes = _memeService.GetRate(meme.Id),
+                    Author = new AuthorDto
+                    {
+                        Id = meme.AuthorId,
+                        FirstName = meme.Author.FirstName,
+                        LastName = meme.Author.LastName,
+                        Username = meme.Author.Username
+                    }
                 });
             }
 
@@ -121,8 +129,23 @@ namespace pindogramApp.Controllers
             try
             {
                 var meme = _memeService.GetById(id);
+                var memeDto = new MemeDto
+                {
+                    DateAdded = meme.DateAdded,
+                    Id = meme.Id,
+                    Title = meme.Title,
+                    Image = Convert.ToBase64String(meme.Image),
+                    Likes = _memeService.GetRate(meme.Id),
+                    Author = new AuthorDto
+                    {
+                        Id = meme.AuthorId,
+                        FirstName = meme.Author.FirstName,
+                        LastName = meme.Author.LastName,
+                        Username = meme.Author.Username
+                    }
+                };
 
-                return Ok(_mapper.Map<MemeDto>(meme));
+                return Ok(memeDto);
             }
             catch (AppException ex)
             {
@@ -136,7 +159,6 @@ namespace pindogramApp.Controllers
         [HttpGet("getMemeRate")]
         public IActionResult GetRate(int memeId)
         {
-
             try
             {
                 int rate = 0;
