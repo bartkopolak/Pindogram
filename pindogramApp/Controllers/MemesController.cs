@@ -23,6 +23,7 @@ namespace pindogramApp.Controllers
 
         public MemesController(IMapper mapper, IMemeService MemeService)
         {
+            _mapper = mapper;
             _memeService = MemeService;
         }
 
@@ -93,29 +94,15 @@ namespace pindogramApp.Controllers
         [HttpGet]
         public IEnumerable<MemeDto> GetMemes()
         {
-            IList<MemeDto> memes = new List<MemeDto>();
-            var mems = _memeService.GetAll();
+            var memes = _memeService.GetAll();
+            var memesDto = _mapper.Map<IEnumerable<MemeDto>>(memes);
 
-            foreach (Meme meme in mems)
+            foreach (var meme in memesDto)
             {
-                memes.Add(new MemeDto
-                {
-                    DateAdded = meme.DateAdded,
-                    Id = meme.Id,
-                    Title = meme.Title,
-                    Image = Convert.ToBase64String(meme.Image),
-                    Likes = _memeService.GetRate(meme.Id),
-                    Author = new AuthorDto
-                    {
-                        Id = meme.AuthorId,
-                        FirstName = meme.Author.FirstName,
-                        LastName = meme.Author.LastName,
-                        Username = meme.Author.Username
-                    }
-                });
+                meme.Likes = _memeService.GetRate((int) meme.Id);
             }
 
-            return memes;
+            return memesDto;
         }
 
         [AllowAnonymous]
@@ -129,21 +116,8 @@ namespace pindogramApp.Controllers
             try
             {
                 var meme = _memeService.GetById(id);
-                var memeDto = new MemeDto
-                {
-                    DateAdded = meme.DateAdded,
-                    Id = meme.Id,
-                    Title = meme.Title,
-                    Image = Convert.ToBase64String(meme.Image),
-                    Likes = _memeService.GetRate(meme.Id),
-                    Author = new AuthorDto
-                    {
-                        Id = meme.AuthorId,
-                        FirstName = meme.Author.FirstName,
-                        LastName = meme.Author.LastName,
-                        Username = meme.Author.Username
-                    }
-                };
+                var memeDto = _mapper.Map<MemeDto>(meme);
+                memeDto.Likes = _memeService.GetRate(meme.Id);
 
                 return Ok(memeDto);
             }
