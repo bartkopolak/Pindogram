@@ -3,6 +3,7 @@ using pindogramApp.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using pindogramApp.Dtos;
 using pindogramApp.Helpers;
 
 namespace pindogramApp.Services
@@ -43,10 +44,11 @@ namespace pindogramApp.Services
             
         }
 
-        public Meme Create(string title, User author)
+        public Meme Create(CreateMemeDto memeObject, User author)
         {
             Meme meme = new Meme();
-            meme.Title = title;
+            meme.Title = memeObject.Title;
+            meme.Image = Convert.FromBase64String(memeObject.Image);
             meme.Author = author;
             meme.DateAdded = DateTime.Now;
             _context.Memes.Add(meme);
