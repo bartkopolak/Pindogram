@@ -10,8 +10,8 @@ using pindogramApp.Entities;
 namespace pindogramApp.Migrations
 {
     [DbContext(typeof(PindogramDataContext))]
-    [Migration("20181012193246_GroupUser")]
-    partial class GroupUser
+    [Migration("20181012232531_Memes")]
+    partial class Memes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,6 +35,46 @@ namespace pindogramApp.Migrations
                     b.ToTable("Groups");
                 });
 
+            modelBuilder.Entity("pindogramApp.Entities.Meme", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AuthorId");
+
+                    b.Property<DateTime>("DateAdded");
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.ToTable("Memes");
+                });
+
+            modelBuilder.Entity("pindogramApp.Entities.MemeRate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("MemeId");
+
+                    b.Property<int?>("UserId");
+
+                    b.Property<bool>("isUpvote");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MemeId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("MemeRates");
+                });
+
             modelBuilder.Entity("pindogramApp.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -43,30 +83,36 @@ namespace pindogramApp.Migrations
 
                     b.Property<string>("FirstName");
 
-                    b.Property<int>("GroupId");
-
                     b.Property<string>("LastName");
 
                     b.Property<byte[]>("PasswordHash");
 
                     b.Property<byte[]>("PasswordSalt");
 
-                    b.Property<string>("Username")
-                        .IsRequired();
+                    b.Property<string>("Username");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("pindogramApp.Entities.User", b =>
+            modelBuilder.Entity("pindogramApp.Entities.Meme", b =>
                 {
-                    b.HasOne("pindogramApp.Entities.Group", "Group")
-                        .WithMany("User")
-                        .HasForeignKey("GroupId")
+                    b.HasOne("pindogramApp.Entities.User", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("pindogramApp.Entities.MemeRate", b =>
+                {
+                    b.HasOne("pindogramApp.Entities.Meme", "Meme")
+                        .WithMany()
+                        .HasForeignKey("MemeId");
+
+                    b.HasOne("pindogramApp.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }

@@ -5,12 +5,38 @@
   </button>
 </div>
 <div class="modal-body">
-    <input type="text" class="form-control"/>
-    <input type="text" class="form-control"/>
-    <input type="text" class="form-control"/>
-    <input type="password" class="form-control"/>
-</div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="register()">Zarejestruj</button>
-  <button type="button" class="btn btn-outline-dark" (click)="cancel()">Zamknij</button>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="firstName">Imie</label>
+      <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
+      <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+        <div *ngIf="f.firstName.errors.required">Imie jest wymagane</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="lastName">Nazwisko</label>
+      <input type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
+      <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+        <div *ngIf="f.lastName.errors.required">Nazwisko jest wymagane</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="username">Nazwa użytkownika</label>
+      <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+      <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+        <div *ngIf="f.username.errors.required">Nazwa użytkownika jest wymagana</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password">Hasło</label>
+      <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+      <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+        <div *ngIf="f.password.errors.required">Hasło jest wymagane</div>
+        <div *ngIf="f.password.errors.minlength">Hasło musi mieć przynajmniej 6 znakow</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <button [disabled]="loading" class="btn btn-primary">Zarejestruj</button>
+    </div>
+  </form>
 </div>
