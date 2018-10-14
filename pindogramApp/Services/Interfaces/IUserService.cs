@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using pindogramApp.Dtos;
 using pindogramApp.Entities;
 
 namespace pindogramApp.Services.Interfaces
@@ -11,5 +12,6 @@ namespace pindogramApp.Services.Interfaces
         User Create(User user, string password);
         void Update(User user, string password = null);
         void Delete(int id);
+
     }
 }

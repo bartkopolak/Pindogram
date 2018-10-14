@@ -10,8 +10,8 @@ using pindogramApp.Entities;
 namespace pindogramApp.Migrations
 {
     [DbContext(typeof(PindogramDataContext))]
-    [Migration("20181012114803_Meme")]
-    partial class Meme
+    [Migration("20181012193246_GroupUser")]
+    partial class GroupUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -43,17 +43,30 @@ namespace pindogramApp.Migrations
 
                     b.Property<string>("FirstName");
 
+                    b.Property<int>("GroupId");
+
                     b.Property<string>("LastName");
 
                     b.Property<byte[]>("PasswordHash");
 
                     b.Property<byte[]>("PasswordSalt");
 
-                    b.Property<string>("Username");
+                    b.Property<string>("Username")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GroupId");
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("pindogramApp.Entities.User", b =>
+                {
+                    b.HasOne("pindogramApp.Entities.Group", "Group")
+                        .WithMany("User")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pindogramApp.Entities;
 
 namespace pindogramApp.Migrations
 {
     [DbContext(typeof(PindogramDataContext))]
-    partial class PindogramDataContextModelSnapshot : ModelSnapshot
+    [Migration("20181012232531_Memes")]
+    partial class Memes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,20 +83,15 @@ namespace pindogramApp.Migrations
 
                     b.Property<string>("FirstName");
 
-                    b.Property<int>("GroupId");
-
                     b.Property<string>("LastName");
 
                     b.Property<byte[]>("PasswordHash");
 
                     b.Property<byte[]>("PasswordSalt");
 
-                    b.Property<string>("Username")
-                        .IsRequired();
+                    b.Property<string>("Username");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
 
                     b.ToTable("Users");
                 });
@@ -116,14 +113,6 @@ namespace pindogramApp.Migrations
                     b.HasOne("pindogramApp.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("pindogramApp.Entities.User", b =>
-                {
-                    b.HasOne("pindogramApp.Entities.Group", "Group")
-                        .WithMany("User")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }
