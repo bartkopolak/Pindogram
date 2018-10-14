@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using pindogramApp.Entities;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using AutoMapper;
+using pindogramApp.Dtos;
 using pindogramApp.Services.Interfaces;
 using pindogramApp.Helpers;
 
@@ -25,7 +27,7 @@ namespace pindogramApp.Controllers
         }
 
         [HttpPost("createMeme")]
-        public async Task<IActionResult> Create(string title)
+        public IActionResult Create([FromBody]CreateMemeDto createMemeDto)
         {
 
             User loggedUser = _memeService.GetLoggedUser(this.User.FindFirst(ClaimTypes.Name).Value);
@@ -33,14 +35,18 @@ namespace pindogramApp.Controllers
             {
                 return BadRequest(new { message = "Not logged in" });
             }
-            if (String.IsNullOrEmpty(title))
+            if (String.IsNullOrEmpty(createMemeDto.Title))
             {
                 return BadRequest(new { message = "Cannot add untitled meme" });
+            }
+            if (String.IsNullOrEmpty(createMemeDto.Image))
+            {
+                return BadRequest(new { message = "Cannot create meme without image" });
             }
             try
             {
                 // save 
-                _memeService.Create(title, loggedUser);
+                _memeService.Create(createMemeDto, loggedUser);
                 return Ok();
             }
             catch (AppException ex)
@@ -51,7 +57,7 @@ namespace pindogramApp.Controllers
         }
 
         [HttpPost("upvoteMeme")]
-        public async Task<IActionResult> Upvote(int memeId)
+        public IActionResult Upvote(int memeId)
         {
             User loggedUser = _memeService.GetLoggedUser(this.User.FindFirst(ClaimTypes.Name).Value);
             try
@@ -68,7 +74,7 @@ namespace pindogramApp.Controllers
         }
 
         [HttpPost("downvoteMeme")]
-        public async Task<IActionResult> Downvote(int memeId)
+        public IActionResult Downvote(int memeId)
         {
             User loggedUser = _memeService.GetLoggedUser(this.User.FindFirst(ClaimTypes.Name).Value);
             try
@@ -85,14 +91,28 @@ namespace pindogramApp.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public IEnumerable<Meme> GetMemes()
+        public IEnumerable<MemeDto> GetMemes()
         {
-            return _memeService.GetAll();
+            IList<MemeDto> memes = new List<MemeDto>();
+            var mems = _memeService.GetAll();
+
+            foreach (Meme meme in mems)
+            {
+                memes.Add(new MemeDto
+                {
+                    DateAdded = meme.DateAdded,
+                    Id = meme.Id,
+                    Title = meme.Title,
+                    Image = Convert.ToBase64String(meme.Image)
+                });
+            }
+
+            return memes;
         }
 
         [AllowAnonymous]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetMeme([FromRoute] int id)
+        public IActionResult GetMeme([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -101,21 +121,22 @@ namespace pindogramApp.Controllers
             try
             {
                 var meme = _memeService.GetById(id);
-                return Ok(meme);
+
+                return Ok(_mapper.Map<MemeDto>(meme));
             }
             catch (AppException ex)
             {
                 // return error message if there was an exception
                 return BadRequest(new { message = ex.Message });
             }
-           
+
         }
 
         [AllowAnonymous]
         [HttpGet("getMemeRate")]
-        public async Task<IActionResult> GetRate(int memeId)
+        public IActionResult GetRate(int memeId)
         {
-            
+
             try
             {
                 int rate = 0;
@@ -131,7 +152,7 @@ namespace pindogramApp.Controllers
 
         // DELETE: api/Memes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMeme([FromRoute] int id)
+        public IActionResult DeleteMeme([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {

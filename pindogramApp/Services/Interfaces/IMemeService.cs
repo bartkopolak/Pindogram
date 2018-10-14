@@ -1,13 +1,13 @@
 ﻿using pindogramApp.Entities;
 using System.Collections.Generic;
-
+using pindogramApp.Dtos;
 
 
 namespace pindogramApp.Services.Interfaces
 {
     public interface IMemeService
     {
-        Meme Create(string title, User author);
+        Meme Create(CreateMemeDto title, User author);
         void Upvote(int memeId, User user);
         void Downvote(int memeId, User user);
         IEnumerable<Meme> GetAll();

@@ -8,7 +8,6 @@ namespace pindogramApp.Dtos
         public int? Id { get; set; } = null;
         public string Title { get; set; }
         public DateTime DateAdded { get; set; }
-        public int LikesCount { get; set; }
-        public User Author { get; set; }
+        public string Image { get; set; }   
     }
 }
