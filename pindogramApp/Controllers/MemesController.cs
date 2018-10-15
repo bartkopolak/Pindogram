@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using pindogramApp.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -99,7 +100,7 @@ namespace pindogramApp.Controllers
                 meme.Likes = _memeService.GetRate((int) meme.Id);
             }
 
-            return memesDto;
+            return memesDto.OrderByDescending(x => x.DateAdded); ;
         }
 
         [HttpGet("{id}")]

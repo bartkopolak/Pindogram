@@ -98,7 +98,7 @@ namespace pindogramApp.Services
         {
             var meme = _context.Memes.Find(id);
             if (meme == null)
-            {{nameof(GetById)}
+            {
                 throw new AppException($"Nie ma mema o takim Id.{nameof(Delete)}");
             }
             var rates = _context.MemeRates.Where(x => x.MemeId == id);
