@@ -43,11 +43,10 @@ namespace pindogramApp.Controllers
         {
             var user = _userService.Authenticate(userDto.Username, userDto.Password);
 
-            //user.Group = _groupService.GetById(user.GroupId);
             if (user == null)
-                return BadRequest(new { message = "Username or password is incorrect" });
+                return BadRequest(new { message = "Niepoprawny login albo hasło" });
             if (user.Group == null)
-                return BadRequest(new { message = $"User {user.FirstName} is not assign to any group. Please contact with admin" });
+                return BadRequest(new { message = $"Użytkownik {user.FirstName} nie jest przypisany do rzadnej z grup. Skontaktuj się z administratorem" });
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);

@@ -4,7 +4,6 @@ using pindogramApp.Entities;
 using pindogramApp.Helpers;
 using System.Linq;
 using AutoMapper;
-using pindogramApp.Dtos;
 using pindogramApp.Services.Interfaces;
 
 namespace pindogramApp.Services
@@ -54,10 +53,10 @@ namespace pindogramApp.Services
         {
             // validation
             if (string.IsNullOrWhiteSpace(password))
-                throw new AppException("Password is required");
+                throw new AppException("Hasło jest wymagane");
 
             if (_context.Users.Any(x => x.Username == user.Username))
-                throw new AppException("Username \"" + user.Username + "\" is already taken");
+                throw new AppException($"Użytkownik {user.Username} jest już zajęty");
 
             byte[] passwordHash, passwordSalt;
             CreatePasswordHash(password, out passwordHash, out passwordSalt);
@@ -83,7 +82,7 @@ namespace pindogramApp.Services
             {
                 // username has changed so check if the new username is already taken
                 if (_context.Users.Any(x => x.Username == userParam.Username))
-                    throw new AppException("Username " + userParam.Username + " is already taken");
+                    throw new AppException($"Użytkownik {user.Username} jest już zajęty");
             }
 
             // update user properties
@@ -119,8 +118,8 @@ namespace pindogramApp.Services
 
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
-            if (password == null) throw new ArgumentNullException("password");
-            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
+            if (password == null) throw new ArgumentNullException("Hasło nie może być puste");
+            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Hasło nie może być puste.");
 
             using (var hmac = new System.Security.Cryptography.HMACSHA512())
             {
@@ -131,10 +130,10 @@ namespace pindogramApp.Services
 
         private static bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
         {
-            if (password == null) throw new ArgumentNullException("password");
-            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
-            if (storedHash.Length != 64) throw new ArgumentException("Invalid length of password hash (64 bytes expected).", "passwordHash");
-            if (storedSalt.Length != 128) throw new ArgumentException("Invalid length of password salt (128 bytes expected).", "passwordHash");
+            if (password == null) throw new ArgumentNullException("Hasło nie może być puste.");
+            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Hasło nie może być puste");
+            if (storedHash.Length != 64) throw new ArgumentException("Nie poprawna długość hasła.");
+            if (storedSalt.Length != 128) throw new ArgumentException("Nie poprawna długość hasła.");
 
             using (var hmac = new System.Security.Cryptography.HMACSHA512(storedSalt))
             {

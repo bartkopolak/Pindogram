@@ -11,7 +11,7 @@ namespace pindogramApp.Controllers
     [Route("api/[controller]")]
     public class GroupController : Controller
     {
-        private IGroupService _groupService;
+        private readonly IGroupService _groupService;
 
         public GroupController(IGroupService groupService)
         {
