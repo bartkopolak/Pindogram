@@ -90,7 +90,6 @@ namespace pindogramApp.Controllers
             }
         }
 
-        [AllowAnonymous]
         [HttpGet]
         public IEnumerable<MemeDto> GetMemes()
         {
@@ -105,7 +104,6 @@ namespace pindogramApp.Controllers
             return memesDto;
         }
 
-        [AllowAnonymous]
         [HttpGet("{id}")]
         public IActionResult GetMeme([FromRoute] int id)
         {
@@ -129,7 +127,6 @@ namespace pindogramApp.Controllers
 
         }
 
-        [AllowAnonymous]
         [HttpGet("getMemeRate")]
         public IActionResult GetRate(int memeId)
         {
@@ -147,6 +144,7 @@ namespace pindogramApp.Controllers
         }
 
         // DELETE: api/Memes/5
+        [Authorize(Policy = "ADMIN")]
         [HttpDelete("{id}")]
         public IActionResult DeleteMeme([FromRoute] int id)
         {
