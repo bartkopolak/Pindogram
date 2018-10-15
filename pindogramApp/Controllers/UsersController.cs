@@ -20,18 +20,21 @@ namespace pindogramApp.Controllers
     [Route("/api/[controller]")]
     public class UsersController : Controller
     {
-        private IUserService _userService;
-        private IMapper _mapper;
+        private readonly IUserService _userService;
+        private readonly IGroupService _groupService;
+        private readonly IMapper _mapper;
         private readonly AppSettings _appSettings;
 
         public UsersController(
             IUserService userService,
             IMapper mapper,
-            IOptions<AppSettings> appSettings)
+            IOptions<AppSettings> appSettings,
+            IGroupService groupService)
         {
             _userService = userService;
             _mapper = mapper;
             _appSettings = appSettings.Value;
+            _groupService = groupService;
         }
 
         [AllowAnonymous]
@@ -41,7 +44,9 @@ namespace pindogramApp.Controllers
             var user = _userService.Authenticate(userDto.Username, userDto.Password);
 
             if (user == null)
-                return BadRequest(new { message = "Username or password is incorrect" });
+                return BadRequest(new { message = "Niepoprawny login albo hasło" });
+            if (user.Group == null)
+                return BadRequest(new { message = $"Użytkownik {user.FirstName} nie jest przypisany do rzadnej z grup. Skontaktuj się z administratorem" });
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
@@ -49,11 +54,12 @@ namespace pindogramApp.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                    new Claim(ClaimTypes.Name, user.Id.ToString()),
+                    new Claim(user.Group.Name, ""), 
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
+                };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
 
@@ -74,7 +80,6 @@ namespace pindogramApp.Controllers
         {
             // map dto to entity
             var user = _mapper.Map<User>(userDto);
-
             try
             {
                 // save 
@@ -88,6 +93,7 @@ namespace pindogramApp.Controllers
             }
         }
 
+        [Authorize(Policy = "ADMIN")]
         [HttpGet]
         public IActionResult GetAll()
         {

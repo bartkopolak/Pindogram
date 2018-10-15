@@ -1,0 +1,24 @@
+.home-wrapper{
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  padding-top: 60px;
+  overflow-y: auto;
+  // background: url('../../assets/main_background.png') center no-repeat;
+  // background-size: cover;
+  z-index: -1;
+  .memes-container{
+    display: block;
+    background: rgba(241, 241, 241,0.9);
+    width: 700px;
+    margin: -90px auto 0px auto;
+    padding: 120px 100px 5px 100px;
+    .meme-wrap{
+      margin-bottom: 45px;
+      .btn{
+        margin-right: 10px;
+      }
+    }
+  }
+}

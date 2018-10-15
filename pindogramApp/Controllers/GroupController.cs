@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using pindogramApp.Entities;
+using pindogramApp.Services.Interfaces;
 
 
 namespace pindogramApp.Controllers
@@ -12,11 +11,11 @@ namespace pindogramApp.Controllers
     [Route("api/[controller]")]
     public class GroupController : Controller
     {
-        private readonly PindogramDataContext _pindogramDataContext;
+        private readonly IGroupService _groupService;
 
-        public GroupController(PindogramDataContext pindogramDataContext)
+        public GroupController(IGroupService groupService)
         {
-            _pindogramDataContext = pindogramDataContext;
+            _groupService = groupService;
         }
 
         /// <summary>
@@ -29,19 +28,8 @@ namespace pindogramApp.Controllers
         [Route("/api/[controller]/GetSingle/{id}")]
         public Group GetSingle(int id)
         {
-            return _pindogramDataContext.Groups.FirstOrDefault(x=> x.Id == id);
+            return _groupService.GetById(id);
         }
 
-        /// <summary>
-        /// Get all groups
-        /// </summary>
-        /// <returns></returns>
-        //GET api/Group/GetAll
-        [HttpGet]
-        [Route("/api/[controller]/GetAll")]
-        public IEnumerable<Group> GetAll()
-        {
-            return _pindogramDataContext.Groups;
-        }
     }
 }
