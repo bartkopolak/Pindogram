@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using pindogramApp.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -34,15 +32,15 @@ namespace pindogramApp.Controllers
             User loggedUser = _memeService.GetLoggedUser(this.User.FindFirst(ClaimTypes.Name).Value);
             if (loggedUser == null)
             {
-                return BadRequest(new { message = "Not logged in" });
+                return BadRequest(new { message = "Użytkownik nie jest zalogowany" });
             }
             if (String.IsNullOrEmpty(createMemeDto.Title))
             {
-                return BadRequest(new { message = "Cannot add untitled meme" });
+                return BadRequest(new { message = "Nie można dodać mema bez tytułu" });
             }
             if (String.IsNullOrEmpty(createMemeDto.Image))
             {
-                return BadRequest(new { message = "Cannot create meme without image" });
+                return BadRequest(new { message = "Nie można dodać mema bez zdjęcia" });
             }
             try
             {

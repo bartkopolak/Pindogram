@@ -21,7 +21,7 @@ namespace pindogramApp.Services
         {
             Meme meme = _context.Memes.Find(memeId);
             if (meme == null)
-                throw new AppException("Requested meme does not exist.");
+                throw new AppException($"Nie ma mema o takim Id.{nameof(Downvote)}");
             MemeRate rate = _context.MemeRates.FirstOrDefault(x => x.Meme == meme && x.User == user);
             if (rate == null)
                 rate = CreateMemeRate(meme, user);
@@ -34,7 +34,7 @@ namespace pindogramApp.Services
         {
             Meme meme = _context.Memes.Find(memeId);
             if( meme == null)
-                throw new AppException("Requested meme does not exist.");
+                throw new AppException($"Nie ma mema o takim Id.{nameof(Upvote)}");
             MemeRate rate = _context.MemeRates.FirstOrDefault(x => x.Meme == meme && x.User == user);
             if (rate == null)
                 rate = CreateMemeRate(meme, user);
@@ -89,7 +89,7 @@ namespace pindogramApp.Services
             var meme = _context.Memes.Find(id);
             if (meme == null)
             {
-                throw new AppException("Requested meme does not exist.");
+                throw new AppException($"Nie ma mema o takim Id.{nameof(GetById)}");
             }
             return meme;
         }
@@ -98,8 +98,8 @@ namespace pindogramApp.Services
         {
             var meme = _context.Memes.Find(id);
             if (meme == null)
-            {
-                throw new AppException("Requested meme does not exist.");
+            {{nameof(GetById)}
+                throw new AppException($"Nie ma mema o takim Id.{nameof(Delete)}");
             }
             var rates = _context.MemeRates.Where(x => x.MemeId == id);
             foreach(MemeRate mr in rates)
