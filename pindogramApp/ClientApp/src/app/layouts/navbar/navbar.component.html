@@ -1,3 +1,9 @@
-<nav [ngSwitch]="isAuthenticated()">
-    <h1>navbar</h1>
+<nav class="nav-outlook">
+    <div class="nav-logo">Pindogram</div>
+    <div class="nav-buttons">
+      <button class="btn-pos" (click)="logout()"><img src="../../../assets/logout.png" alt="Wyloguj"></button>
+      <button class="btn-pos"><img src="../../../assets/avatar.png" alt="Profil"></button>
+      <button class="btn-pos"><img src="../../../assets/add_meme.png" alt="Dodaj mem"></button>
+      <button class="btn-pos"><img src="../../../assets/cockpit.png" alt="Admin"></button>
+    </div>
 </nav>
