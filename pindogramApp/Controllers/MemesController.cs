@@ -98,10 +98,12 @@ namespace pindogramApp.Controllers
             foreach (var meme in memesDto)
             {
                 meme.Likes = _memeService.GetRate((int) meme.Id);
+                meme.Author = _mapper.Map<AuthorDto>(_memeService.GetMemeAuthor((int) meme.Id));
             }
 
             return memesDto.OrderByDescending(x => x.DateAdded); ;
         }
+
 
         [HttpGet("{id}")]
         public IActionResult GetMeme([FromRoute] int id)
@@ -115,6 +117,7 @@ namespace pindogramApp.Controllers
                 var meme = _memeService.GetById(id);
                 var memeDto = _mapper.Map<MemeDto>(meme);
                 memeDto.Likes = _memeService.GetRate(meme.Id);
+                memeDto.Author = _mapper.Map<AuthorDto>(_memeService.GetMemeAuthor(meme.Id));
 
                 return Ok(memeDto);
             }

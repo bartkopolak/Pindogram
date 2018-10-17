@@ -47,6 +47,8 @@
     <Compile Remove="Migrations\20181012211349_MemeRates.Designer.cs" />
     <Compile Remove="Migrations\20181012223536_Memes.cs" />
     <Compile Remove="Migrations\20181012223536_Memes.Designer.cs" />
+    <Compile Remove="Migrations\20181017194250_UserGroup.cs" />
+    <Compile Remove="Migrations\20181017194250_UserGroup.Designer.cs" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
