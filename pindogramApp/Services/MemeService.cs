@@ -57,6 +57,18 @@ namespace pindogramApp.Services
             return meme;
         }
 
+        public User GetMemeAuthor(int memeId)
+        {
+            Meme meme = _context.Memes.FirstOrDefault(x => x.Id == memeId);
+            if(meme == null)
+            {
+                throw new AppException($"Nie ma mema o takim Id.{nameof(GetById)}");
+            }
+            int authorId = meme.AuthorId;
+            User author = _context.Users.FirstOrDefault(x => x.Id == authorId);
+            return author;
+        }
+
         public int GetRate(int memeId)
         {
             int id = memeId;

@@ -1,5 +1,6 @@
 import { AuthGuard } from './../../shared/auth.guard';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-navbar',
@@ -10,10 +11,15 @@ import { Component } from '@angular/core';
 })
 export class NavbarComponent {
 
-  constructor(private authenticate: AuthGuard) {}
+  constructor(private authenticate: AuthGuard, private router: Router) {}
 
   isAuthenticated() {
     return this.authenticate.isAuthenticated();
   }
+
+  logout() {
+    localStorage.removeItem('currentUser');
+    this.router.navigate(['/login']);
+}
 
 }
