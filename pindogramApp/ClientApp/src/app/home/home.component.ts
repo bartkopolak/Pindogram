@@ -1,11 +1,12 @@
+import { Component, OnInit } from '@angular/core';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { Memes } from './memes/memes';
+import { MemesService } from './memes/memes.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AlertService } from './../shared/alert/alert.service';
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { MemesService } from './memes/memes.service';
-import { Memes } from './memes/memes';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { AddMemesComponent } from './memes/add-memes.component';
+import { DeleteMemesComponent } from './memes/delete-memes.component';
 
 @Component({
   selector: 'app-home',
@@ -36,7 +37,15 @@ export class HomeComponent implements OnInit {
     this.modalService.open(AddMemesComponent as Component, {centered: true})
     .result.then((result) => {
       this.loadAll();
-    });
+    }, cancel => {});
+  }
+
+  deleteMeme(meme: Memes) {
+    const modalRef = this.modalService.open(DeleteMemesComponent as Component, {centered: true});
+    modalRef.componentInstance.meme = meme;
+    modalRef.result.then(() => {
+      this.loadAll();
+    }, cancel => {});
   }
 
   logout() {

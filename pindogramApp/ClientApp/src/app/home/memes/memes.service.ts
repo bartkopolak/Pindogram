@@ -19,6 +19,10 @@ export class MemesService {
         .map((res: HttpResponse<Memes>) => this.convertResponse(res));
     }
 
+    delete(id: number): Observable<HttpResponse<any>> {
+      return this.http.delete<any>(SERVER_API_URL + `/api/Memes/` + id, { observe: 'response'});
+    }
+
     private convertResponse(res: HttpResponse<Memes>): HttpResponse<Memes> {
       const body: Memes = this.convertItemFromServer(res.body);
       return res.clone({body});

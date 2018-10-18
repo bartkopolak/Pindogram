@@ -1,0 +1,17 @@
+<div class="delete-memes-wrapper">
+  <div class="modal-header">
+    <h4 class="modal-title">Usuń mema</h4>
+    <button type="button" class="close" aria-label="Close" (click)="cancel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <p>Czy na pewno chcesz usunąć mema <b>{{meme.title}}</b>?</p>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary" (click)="delete()">Tak</button>
+    <button class="btn btn-secondary" (click)="cancel()">Nie</button>
+  </div>
+</div>
