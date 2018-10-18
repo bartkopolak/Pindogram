@@ -5,5 +5,7 @@ export class Memes {
   image: string;
   likes?: number;
   dateAdded?: string;
+  canUpvote?: boolean;
+  canDownvote?: boolean;
   author?: User;
 }

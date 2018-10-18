@@ -40,6 +40,26 @@ export class HomeComponent implements OnInit {
     }, cancel => {});
   }
 
+  upvoteMeme(id: number) {
+    this.memesService.upvote(id).subscribe(() => {
+      this.alertService.success('Pomyślniy upvote.');
+      this.loadAll();
+    },
+    error => {
+      this.alertService.error(error);
+    });
+  }
+
+  downvoteMeme(id: number) {
+    this.memesService.downvote(id).subscribe(() => {
+      this.alertService.success('Pomyślniy downvote.');
+      this.loadAll();
+    },
+    error => {
+      this.alertService.error(error);
+    });
+  }
+
   deleteMeme(meme: Memes) {
     const modalRef = this.modalService.open(DeleteMemesComponent as Component, {centered: true});
     modalRef.componentInstance.meme = meme;
