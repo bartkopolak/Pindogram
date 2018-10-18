@@ -1,6 +1,6 @@
 import { Memes } from './memes';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/observable';
 import { SERVER_API_URL } from '../../app.constants';
 
@@ -17,6 +17,14 @@ export class MemesService {
       const copy = this.convert(meme);
       return this.http.post<Memes>(SERVER_API_URL + `/api/Memes/createMeme`, copy, { observe: 'response' })
         .map((res: HttpResponse<Memes>) => this.convertResponse(res));
+    }
+
+    upvote(id: number): Observable<HttpResponse<any>> {
+      return this.http.post<any>(SERVER_API_URL + `/api/Memes/upvoteMeme?memeId=` + id, {}, { observe: 'response'});
+    }
+
+    downvote(id: number): Observable<HttpResponse<any>> {
+      return this.http.post<any>(SERVER_API_URL + `/api/Memes/downvoteMeme?memeId=` + id, {}, { observe: 'response'});
     }
 
     delete(id: number): Observable<HttpResponse<any>> {
