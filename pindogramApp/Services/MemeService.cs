@@ -44,14 +44,17 @@ namespace pindogramApp.Services
                 throw new AppException($"Nie ma mema o takim Id. Metoda: {nameof(Upvote)}");
             MemeRate rate = _context.MemeRates.FirstOrDefault(x => x.Meme == meme && x.User == user);
             if (rate == null)
+            {
                 rate = CreateMemeRate(meme, user);
+                rate.isUpvote = true;
+            }
+                
             if (!rate.isUpvote)
             {
                 _context.MemeRates.Remove(rate);
             }
             else
             {
-                rate.isUpvote = true;
                 _context.MemeRates.Update(rate);
             }
 
