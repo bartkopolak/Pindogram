@@ -3,6 +3,7 @@ using pindogramApp.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using pindogramApp.Dtos;
 using pindogramApp.Helpers;
 
@@ -25,11 +26,14 @@ namespace pindogramApp.Services
             MemeRate rate = _context.MemeRates.FirstOrDefault(x => x.Meme == meme && x.User == user);
             if (rate == null)
                 rate = CreateMemeRate(meme, user);
-            rate.isUpvote = false;
-            meme.CanUpVote = true;
-            meme.CanDownVote = false;
-            _context.MemeRates.Update(rate);
-            _context.Memes.Update(meme);
+            if (rate.isUpvote)
+            {
+                _context.MemeRates.Remove(rate);
+            }else
+            {
+                rate.isUpvote = false;
+                _context.MemeRates.Update(rate);
+            }
             _context.SaveChanges();
         }
 
@@ -41,13 +45,17 @@ namespace pindogramApp.Services
             MemeRate rate = _context.MemeRates.FirstOrDefault(x => x.Meme == meme && x.User == user);
             if (rate == null)
                 rate = CreateMemeRate(meme, user);
-            rate.isUpvote = true;
-            meme.CanUpVote = false;
-            meme.CanDownVote = true;
-            _context.MemeRates.Update(rate);
-            _context.Memes.Update(meme);
+            if (rate.isUpvote)
+            {
+                _context.MemeRates.Remove(rate);
+            }
+            else
+            {
+                rate.isUpvote = true;
+                _context.MemeRates.Update(rate);
+            }
+
             _context.SaveChanges();
-            
         }
 
         public Meme Create(CreateMemeDto memeObject, User author)
@@ -57,8 +65,6 @@ namespace pindogramApp.Services
             meme.Image = Convert.FromBase64String(memeObject.Image);
             meme.Author = author;
             meme.DateAdded = DateTime.Now;
-            meme.CanDownVote = true;
-            meme.CanUpVote = true;
             _context.Memes.Add(meme);
             _context.SaveChanges();
 
@@ -86,6 +92,16 @@ namespace pindogramApp.Services
             return upvotedCount - downvotedCount;
         }
 
+        public bool IsActiveUp(int memeId, int userId)
+        {
+            return _context.MemeRates.Any(x => x.MemeId == memeId && x.UserId == userId && x.isUpvote);
+        }
+
+        public bool IsActiveDown(int memeId, int userId)
+        {
+            return _context.MemeRates.Any(x => x.MemeId == memeId && x.UserId == userId && !x.isUpvote);
+        }
+
         //helpers
 
         private MemeRate CreateMemeRate(Meme meme, User user)
@@ -98,10 +114,7 @@ namespace pindogramApp.Services
             return newLike;
         }
 
-        public IEnumerable<Meme> GetAll()
-        {
-            return _context.Memes;
-        }
+        public IEnumerable<Meme> GetAll() => _context.Memes;
 
         public Meme GetById(int id)
         {

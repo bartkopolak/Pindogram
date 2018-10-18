@@ -15,9 +15,6 @@ namespace pindogramApp.Entities
         [ForeignKey("Author")]
         public int AuthorId { get; set; }
         public User Author { get; set; }
-        public bool CanUpVote { get; set; }
-        public bool CanDownVote { get; set; }
-
 
     }
 }
