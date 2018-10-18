@@ -42,7 +42,6 @@ export class HomeComponent implements OnInit {
 
   upvoteMeme(id: number) {
     this.memesService.upvote(id).subscribe(() => {
-      this.alertService.success('Pomyślniy upvote.');
       this.loadAll();
     },
     error => {
@@ -52,7 +51,6 @@ export class HomeComponent implements OnInit {
 
   downvoteMeme(id: number) {
     this.memesService.downvote(id).subscribe(() => {
-      this.alertService.success('Pomyślniy downvote.');
       this.loadAll();
     },
     error => {

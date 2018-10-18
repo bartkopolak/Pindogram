@@ -16,6 +16,9 @@
       margin-bottom: 45px;
       .btn{
         margin-right: 10px;
+        &.active{
+          color: blue;
+        }
       }
     }
   }
