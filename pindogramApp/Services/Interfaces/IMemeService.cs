@@ -16,5 +16,7 @@ namespace pindogramApp.Services.Interfaces
         void Delete(int id);
         int GetRate(int memeId);
         User GetLoggedUser(string strAutId);
+        bool IsActiveUp(int memeId, int userId);
+        bool IsActiveDown(int memeId, int userId);
     }
 }

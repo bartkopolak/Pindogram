@@ -99,6 +99,10 @@ namespace pindogramApp.Controllers
             {
                 meme.Likes = _memeService.GetRate((int) meme.Id);
                 meme.Author = _mapper.Map<AuthorDto>(_memeService.GetMemeAuthor((int) meme.Id));
+                meme.ActiveDown =
+                    _memeService.IsActiveDown((int)meme.Id, Int32.Parse(this.User.FindFirst(ClaimTypes.Name).Value));
+                meme.ActiveUp =
+                    _memeService.IsActiveUp((int)meme.Id, Int32.Parse(this.User.FindFirst(ClaimTypes.Name).Value));
             }
 
             return memesDto.OrderByDescending(x => x.DateAdded); ;
@@ -118,6 +122,10 @@ namespace pindogramApp.Controllers
                 var memeDto = _mapper.Map<MemeDto>(meme);
                 memeDto.Likes = _memeService.GetRate(meme.Id);
                 memeDto.Author = _mapper.Map<AuthorDto>(_memeService.GetMemeAuthor(meme.Id));
+                memeDto.ActiveDown =
+                    _memeService.IsActiveDown((int)meme.Id, Int32.Parse(this.User.FindFirst(ClaimTypes.Name).Value));
+                memeDto.ActiveUp =
+                    _memeService.IsActiveUp((int)meme.Id, Int32.Parse(this.User.FindFirst(ClaimTypes.Name).Value));
 
                 return Ok(memeDto);
             }
