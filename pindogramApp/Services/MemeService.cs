@@ -26,7 +26,7 @@ namespace pindogramApp.Services
             MemeRate rate = _context.MemeRates.FirstOrDefault(x => x.Meme == meme && x.User == user);
             if (rate == null)
                 rate = CreateMemeRate(meme, user);
-            if (!rate.isUpvote)
+            if (rate.isUpvote)
             {
                 _context.MemeRates.Remove(rate);
             }else
@@ -45,7 +45,7 @@ namespace pindogramApp.Services
             MemeRate rate = _context.MemeRates.FirstOrDefault(x => x.Meme == meme && x.User == user);
             if (rate == null)
                 rate = CreateMemeRate(meme, user);
-            if (rate.isUpvote)
+            if (!rate.isUpvote)
             {
                 _context.MemeRates.Remove(rate);
             }
