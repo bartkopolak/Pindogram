@@ -11,5 +11,7 @@ namespace pindogramApp.Dtos
         public string Image { get; set; }
         public int Likes { get; set; }
         public AuthorDto Author { get; set; }
+        public bool CanUpVote { get; set; }
+        public bool CanDownVote { get; set; }
     }
 }
