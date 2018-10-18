@@ -25,15 +25,21 @@ namespace pindogramApp.Services
                 throw new AppException($"Nie ma mema o takim Id. Metoda: {nameof(Downvote)}");
             MemeRate rate = _context.MemeRates.FirstOrDefault(x => x.Meme == meme && x.User == user);
             if (rate == null)
-                rate = CreateMemeRate(meme, user);
-            if (rate.isUpvote)
             {
-                _context.MemeRates.Remove(rate);
-            }else
+                rate = CreateMemeRate(meme, user);
+                rate.isUpvote = false;
+                _context.MemeRates.Update(rate);
+            }
+            else if (rate.isUpvote)
             {
                 rate.isUpvote = false;
                 _context.MemeRates.Update(rate);
             }
+            else if (!rate.isUpvote)
+            {
+                _context.MemeRates.Remove(rate);
+            }
+
             _context.SaveChanges();
         }
 
@@ -47,15 +53,16 @@ namespace pindogramApp.Services
             {
                 rate = CreateMemeRate(meme, user);
                 rate.isUpvote = true;
+                _context.MemeRates.Update(rate);
             }
-                
-            if (!rate.isUpvote)
+            else if (!rate.isUpvote)
+            {
+                rate.isUpvote = true;
+                _context.MemeRates.Update(rate);
+            }
+            else if (rate.isUpvote)
             {
                 _context.MemeRates.Remove(rate);
-            }
-            else
-            {
-                _context.MemeRates.Update(rate);
             }
 
             _context.SaveChanges();
