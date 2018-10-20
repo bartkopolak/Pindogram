@@ -13,7 +13,7 @@ using pindogramApp.Helpers;
 namespace pindogramApp.Controllers
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/")]
     [ApiController]
     public class MemesController : ControllerBase
     {
@@ -26,8 +26,8 @@ namespace pindogramApp.Controllers
             _memeService = MemeService;
         }
 
-        [HttpPost("createMeme")]
-        public IActionResult Create([FromBody]CreateMemeDto createMemeDto)
+        [HttpPost("[Action]")]
+        public IActionResult CreateMeme([FromBody]CreateMemeDto createMemeDto)
         {
 
             User loggedUser = _memeService.GetLoggedUser(this.User.FindFirst(ClaimTypes.Name).Value);
@@ -56,8 +56,8 @@ namespace pindogramApp.Controllers
             }
         }
 
-        [HttpPost("upvoteMeme")]
-        public IActionResult Upvote(int memeId)
+        [HttpPost("[Action]")]
+        public IActionResult UpvoteMeme(int memeId)
         {
             User loggedUser = _memeService.GetLoggedUser(this.User.FindFirst(ClaimTypes.Name).Value);
             try
@@ -73,8 +73,8 @@ namespace pindogramApp.Controllers
 
         }
 
-        [HttpPost("downvoteMeme")]
-        public IActionResult Downvote(int memeId)
+        [HttpPost("[Action]")]
+        public IActionResult DownvoteMeme(int memeId)
         {
             User loggedUser = _memeService.GetLoggedUser(this.User.FindFirst(ClaimTypes.Name).Value);
             try
@@ -89,28 +89,49 @@ namespace pindogramApp.Controllers
             }
         }
 
-        [HttpGet]
-        public IEnumerable<MemeDto> GetMemes()
+        [HttpGet("[Action]")]
+        public IEnumerable<MemeDto> GetAllApprovedMemes()
         {
-            var memes = _memeService.GetAll();
+            var memes = _memeService.GetAllApproved();
+
             var memesDto = _mapper.Map<IEnumerable<MemeDto>>(memes);
 
             foreach (var meme in memesDto)
             {
-                meme.Likes = _memeService.GetRate((int) meme.Id);
-                meme.Author = _mapper.Map<AuthorDto>(_memeService.GetMemeAuthor((int) meme.Id));
+                meme.Likes = _memeService.GetRate((int)meme.Id);
+                meme.Author = _mapper.Map<AuthorDto>(_memeService.GetMemeAuthor((int)meme.Id));
+                meme.ActiveDown =
+                    _memeService.IsActiveDown((int)meme.Id, int.Parse(this.User.FindFirst(ClaimTypes.Name).Value));
+                meme.ActiveUp =
+                    _memeService.IsActiveUp((int)meme.Id, int.Parse(this.User.FindFirst(ClaimTypes.Name).Value));
+            }
+
+            return memesDto.OrderByDescending(x => x.DateAdded);
+        }
+
+        [Authorize(Policy = "ADMIN")]
+        [HttpGet("[Action]")]
+        public IEnumerable<MemeDto> GetAllUnapprovedMemes()
+        {
+            var memes = _memeService.GetAllUnapproved();
+            var memesDto = _mapper.Map<IEnumerable<MemeDto>>(memes);
+
+            foreach (var meme in memesDto)
+            {
+                meme.Likes = _memeService.GetRate((int)meme.Id);
+                meme.Author = _mapper.Map<AuthorDto>(_memeService.GetMemeAuthor((int)meme.Id));
                 meme.ActiveDown =
                     _memeService.IsActiveDown((int)meme.Id, Int32.Parse(this.User.FindFirst(ClaimTypes.Name).Value));
                 meme.ActiveUp =
                     _memeService.IsActiveUp((int)meme.Id, Int32.Parse(this.User.FindFirst(ClaimTypes.Name).Value));
             }
 
-            return memesDto.OrderByDescending(x => x.DateAdded); ;
+            return memesDto.OrderByDescending(x => x.DateAdded);
         }
 
-
-        [HttpGet("{id}")]
-        public IActionResult GetMeme([FromRoute] int id)
+        [Authorize(Policy = "ADMIN")]
+        [HttpGet("[Action]/{id}")]
+        public IActionResult GetSingleUnapprovedMeme([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -118,7 +139,7 @@ namespace pindogramApp.Controllers
             }
             try
             {
-                var meme = _memeService.GetById(id);
+                var meme = _memeService.GetSingleUnapprovedById(id);
                 var memeDto = _mapper.Map<MemeDto>(meme);
                 memeDto.Likes = _memeService.GetRate(meme.Id);
                 memeDto.Author = _mapper.Map<AuthorDto>(_memeService.GetMemeAuthor(meme.Id));
@@ -134,11 +155,57 @@ namespace pindogramApp.Controllers
                 // return error message if there was an exception
                 return BadRequest(new { message = ex.Message });
             }
-
         }
 
-        [HttpGet("getMemeRate")]
-        public IActionResult GetRate(int memeId)
+        [HttpGet("[Action]/{id}")]
+        public IActionResult GetSingleApprovedMeme([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var meme = _memeService.GetSingleApprovedById(id);
+                var memeDto = _mapper.Map<MemeDto>(meme);
+                memeDto.Likes = _memeService.GetRate(meme.Id);
+                memeDto.Author = _mapper.Map<AuthorDto>(_memeService.GetMemeAuthor(meme.Id));
+                memeDto.ActiveDown =
+                    _memeService.IsActiveDown((int)meme.Id, Int32.Parse(this.User.FindFirst(ClaimTypes.Name).Value));
+                memeDto.ActiveUp =
+                    _memeService.IsActiveUp((int)meme.Id, Int32.Parse(this.User.FindFirst(ClaimTypes.Name).Value));
+
+                return Ok(memeDto);
+            }
+            catch (AppException ex)
+            {
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [Authorize(Policy = "ADMIN")]
+        [HttpPost("[Action]/{id}")]
+        public IActionResult ApproveMeme([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var memeTitle =_memeService.ApproveMeme(id);
+                return Ok(new { message = $"Zaakceptowałeś {memeTitle}" });
+            }
+            catch (AppException ex)
+            {
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpGet("[Action]/{id}")]
+        public IActionResult GetRateOfMemeById(int memeId)
         {
             try
             {
@@ -155,8 +222,8 @@ namespace pindogramApp.Controllers
 
         // DELETE: api/Memes/5
         [Authorize(Policy = "ADMIN")]
-        [HttpDelete("{id}")]
-        public IActionResult DeleteMeme([FromRoute] int id)
+        [HttpDelete("[Action]/{id}")]
+        public IActionResult DeleteMemeById([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
