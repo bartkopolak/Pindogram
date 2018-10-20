@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { MessageService } from './../shared/message.service';
+import { Component, OnInit, Output } from '@angular/core';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Memes } from './memes/memes';
 import { MemesService } from './memes/memes.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AlertService } from './../shared/alert/alert.service';
-import { AddMemesComponent } from './memes/add-memes.component';
 import { DeleteMemesComponent } from './memes/delete-memes.component';
 
 @Component({
@@ -22,7 +22,12 @@ export class HomeComponent implements OnInit {
   constructor(private router: Router,
     private memesService: MemesService,
     private alertService: AlertService,
-    private modalService: NgbModal) {}
+    private modalService: NgbModal,
+    private messageService: MessageService) {
+      this.messageService.getMessage().subscribe(message => {
+        this.loadAll();
+      });
+    }
 
   loadAll() {
     this.memesService.getAll().subscribe(
@@ -31,13 +36,6 @@ export class HomeComponent implements OnInit {
       },
       (res: HttpErrorResponse) => this.onError(res.message)
     );
-  }
-
-  addMeme() {
-    this.modalService.open(AddMemesComponent as Component, {centered: true})
-    .result.then((result) => {
-      this.loadAll();
-    }, cancel => {});
   }
 
   upvoteMeme(id: number) {
