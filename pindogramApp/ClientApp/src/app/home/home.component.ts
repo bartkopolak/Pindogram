@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit {
     }
 
   loadAll() {
-    this.memesService.getAll().subscribe(
+    this.memesService.getAllApproved().subscribe(
       (res: HttpResponse<Memes[]>) => {
         this.memes = res.body;
       },

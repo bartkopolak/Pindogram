@@ -1,6 +1,10 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AdministrationComponent } from './administration.component';
+import { SharedModule } from './../../shared/shared.module';
 @NgModule({
+  imports: [
+    SharedModule
+  ],
   declarations: [
       AdministrationComponent,
   ],
