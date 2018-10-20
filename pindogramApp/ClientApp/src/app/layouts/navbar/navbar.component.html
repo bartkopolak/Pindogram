@@ -1,9 +1,9 @@
 <nav class="nav-outlook">
-    <div class="nav-logo">Pindogram</div>
+    <div class="nav-logo" routerLink="/">Pindogram</div>
     <div class="nav-buttons">
-      <button class="btn-pos" (click)="logout()"><img src="../../../assets/logout.png" alt="Wyloguj"></button>
-      <button class="btn-pos"><img src="../../../assets/avatar.png" alt="Profil"></button>
-      <button class="btn-pos"><img src="../../../assets/add_meme.png" alt="Dodaj mem"></button>
-      <button class="btn-pos"><img src="../../../assets/cockpit.png" alt="Admin"></button>
+      <p>Zalogowany jako: {{user.firstName}} {{user.lastName}}</p>
+      <button class="btn-pos" routerLink="/administration" placement="bottom" ngbTooltip="Cuckpit administratora"><img src="../../../assets/cockpit.png" alt="img"></button>
+      <button class="btn-pos" (click)="addMeme()" placement="bottom" ngbTooltip="Dodaj mema"><img src="../../../assets/add_meme.png" alt="img"></button>
+      <button class="btn-pos" (click)="logout()" placement="bottom" ngbTooltip="Wyloguj się"><img src="../../../assets/logout.png" alt="Wyloguj"></button>
     </div>
 </nav>

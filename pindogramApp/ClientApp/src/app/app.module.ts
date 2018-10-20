@@ -10,6 +10,10 @@ import { LoginModule } from './login/login.module';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { MainLayoutModule } from './layouts/main-layout/main-layout.module';
 import { SharedModule } from './shared/shared.module';
+import { MessageService } from './shared/message.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from './shared/jwt.interceptor';
+import { ErrorInterceptor } from './shared/error.interceptor';
 
 @NgModule({
   declarations: [
@@ -24,6 +28,11 @@ import { SharedModule } from './shared/shared.module';
     MainLayoutModule,
     AppRoutingModule,
     SharedModule
+  ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    MessageService
   ],
   bootstrap: [AppComponent]
 })
