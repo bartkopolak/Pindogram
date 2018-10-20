@@ -46,7 +46,7 @@ namespace pindogramApp.Services
         public void Upvote(int memeId, User user)
         {
             Meme meme = _context.Memes.Find(memeId);
-            if( meme == null)
+            if (meme == null)
                 throw new AppException($"Nie ma mema o takim Id. Metoda: {nameof(Upvote)}");
             MemeRate rate = _context.MemeRates.FirstOrDefault(x => x.Meme == meme && x.User == user);
             if (rate == null)
@@ -75,6 +75,8 @@ namespace pindogramApp.Services
             meme.Image = Convert.FromBase64String(memeObject.Image);
             meme.Author = author;
             meme.DateAdded = DateTime.Now;
+            meme.IsApproved = false;
+
             _context.Memes.Add(meme);
             _context.SaveChanges();
 
@@ -84,9 +86,9 @@ namespace pindogramApp.Services
         public User GetMemeAuthor(int memeId)
         {
             Meme meme = _context.Memes.FirstOrDefault(x => x.Id == memeId);
-            if(meme == null)
+            if (meme == null)
             {
-                throw new AppException($"Nie ma mema o takim Id. Metoda: {nameof(GetById)}");
+                throw new AppException("Nie ma mema o takim Id.");
             }
             int authorId = meme.AuthorId;
             User author = _context.Users.FirstOrDefault(x => x.Id == authorId);
@@ -124,16 +126,42 @@ namespace pindogramApp.Services
             return newLike;
         }
 
-        public IEnumerable<Meme> GetAll() => _context.Memes;
+        public IEnumerable<Meme> GetAllApproved() => _context.Memes.Where(x => x.IsApproved);
 
-        public Meme GetById(int id)
+        public IEnumerable<Meme> GetAllUnapproved() => _context.Memes.Where(x => !x.IsApproved);
+
+        public Meme GetSingleApprovedById(int id)
         {
-            var meme = _context.Memes.Find(id);
+            var meme = _context.Memes.FirstOrDefault(x => x.Id == id && x.IsApproved);
             if (meme == null)
             {
-                throw new AppException($"Nie ma mema o takim Id. Metoda: {nameof(GetById)}");
+                throw new AppException("Nie ma mema o takim Id.");
             }
             return meme;
+        }
+
+        public Meme GetSingleUnapprovedById(int id)
+        {
+            var meme = _context.Memes.FirstOrDefault(x => x.Id == id && !x.IsApproved);
+            if (meme == null)
+            {
+                throw new AppException("Nie ma mema o takim Id.");
+            }
+            return meme;
+        }
+
+        public string ApproveMeme(int id)
+        {
+            var meme = _context.Memes.FirstOrDefault(x => x.Id == id);
+            if (meme == null)
+            {
+                throw new AppException("Nie ma mema o takim Id.");
+            }
+            meme.IsApproved = true;
+            _context.Memes.Update(meme);
+            _context.SaveChanges();
+
+            return meme.Title;
         }
 
         public void Delete(int id)
@@ -144,11 +172,11 @@ namespace pindogramApp.Services
                 throw new AppException($"Nie ma mema o takim Id. Metoda: {nameof(Delete)}");
             }
             var rates = _context.MemeRates.Where(x => x.MemeId == id);
-            foreach(MemeRate mr in rates)
+            foreach (MemeRate mr in rates)
             {
                 _context.MemeRates.Remove(mr);
             }
-            
+
             _context.Memes.Remove(meme);
             _context.SaveChanges();
         }
