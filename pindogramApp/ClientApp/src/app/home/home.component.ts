@@ -1,5 +1,4 @@
-import { MessageService } from './../shared/message.service';
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Memes } from './memes/memes';
@@ -22,12 +21,7 @@ export class HomeComponent implements OnInit {
   constructor(private router: Router,
     private memesService: MemesService,
     private alertService: AlertService,
-    private modalService: NgbModal,
-    private messageService: MessageService) {
-      this.messageService.getMessage().subscribe(message => {
-        this.loadAll();
-      });
-    }
+    private modalService: NgbModal) {}
 
   loadAll() {
     this.memesService.getAllApproved().subscribe(
@@ -80,5 +74,4 @@ export class HomeComponent implements OnInit {
   private onError(error) {
     this.alertService.error(error);
   }
-
 }

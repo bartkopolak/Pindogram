@@ -1,6 +1,8 @@
+import { Subscription } from 'rxjs/Subscription';
+import { MessageService } from './../../shared/message.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MemesService } from '../../home';
 import { Memes } from '../../home/memes/memes';
 import { AlertService } from '../../shared/alert/alert.service';
@@ -13,15 +15,21 @@ import { DeleteMemesComponent } from '../../home/memes/delete-memes.component';
   ]
 })
 
-export class AdministrationComponent implements OnInit {
+export class AdministrationComponent implements OnInit, OnDestroy {
 
   memes: Memes[];
+  subscription: Subscription;
 
   constructor(
     private memesService: MemesService,
     private alertService: AlertService,
-    private modalService: NgbModal
-  ) {}
+    private modalService: NgbModal,
+    private messageService: MessageService
+  ) {
+    this.subscription = this.messageService.getMessage().subscribe(message => {
+      this.loadAll();
+    });
+  }
 
   loadAll() {
     this.memesService.getAllUnapproved().subscribe(
@@ -50,12 +58,16 @@ export class AdministrationComponent implements OnInit {
     }, cancel => {});
   }
 
+  trackId(index: number, item: Memes) {
+    return item.id;
+  }
+
   ngOnInit() {
     this.loadAll();
   }
 
-  trackId(index: number, item: Memes) {
-    return item.id;
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   private onError(error) {

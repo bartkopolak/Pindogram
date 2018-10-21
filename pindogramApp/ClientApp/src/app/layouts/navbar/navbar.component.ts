@@ -22,6 +22,10 @@ export class NavbarComponent implements OnInit {
      private messageService: MessageService
      ) {}
 
+  isAuthenticated() {
+    return this.authenticate.isAuthenticated();
+  }
+
   addMeme() {
     this.modalService.open(AddMemesComponent as Component, {centered: true})
     .result.then((result) => {
@@ -29,17 +33,12 @@ export class NavbarComponent implements OnInit {
     }, cancel => {});
   }
 
-  isAuthenticated() {
-    return this.authenticate.isAuthenticated();
-  }
-
-  ngOnInit() {
-    this.user = JSON.parse(localStorage.getItem('currentUser'));
-  }
-
   logout() {
     localStorage.removeItem('currentUser');
     this.router.navigate(['/login']);
   }
 
+  ngOnInit() {
+    this.user = JSON.parse(localStorage.getItem('currentUser'));
+  }
 }
