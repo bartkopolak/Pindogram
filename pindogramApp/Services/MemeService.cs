@@ -126,9 +126,9 @@ namespace pindogramApp.Services
             return newLike;
         }
 
-        public IEnumerable<Meme> GetAllApproved() => _context.Memes.Where(x => x.IsApproved);
+        public IEnumerable<Meme> GetAllApproved() => _context.Memes.Where(x => x.IsApproved).OrderByDescending(x=> x.DateAdded);
 
-        public IEnumerable<Meme> GetAllUnapproved() => _context.Memes.Where(x => !x.IsApproved);
+        public IEnumerable<Meme> GetAllUnapproved() => _context.Memes.Where(x => !x.IsApproved).OrderByDescending(x => x.DateAdded);
 
         public Meme GetSingleApprovedById(int id)
         {
