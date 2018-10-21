@@ -23,14 +23,26 @@ export class AlertService {
     success(message: string, keepAfterNavigationChange = false) {
         this.keepAfterNavigationChange = keepAfterNavigationChange;
         this.subject.next({ type: 'success', text: message });
+        this.autoClear();
     }
 
     error(message: string, keepAfterNavigationChange = false) {
         this.keepAfterNavigationChange = keepAfterNavigationChange;
         this.subject.next({ type: 'error', text: message });
+        this.autoClear();
     }
 
     getMessage(): Observable<any> {
         return this.subject.asObservable();
+    }
+
+    autoClear() {
+      setTimeout(() => {
+        this.subject.next();
+      }, 5000);
+    }
+
+    clear() {
+      this.subject.next();
     }
 }

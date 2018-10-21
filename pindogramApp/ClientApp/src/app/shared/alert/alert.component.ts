@@ -27,6 +27,6 @@ export class AlertComponent implements OnInit, OnDestroy {
     }
 
     close() {
-      this.message = null;
+      this.alertService.clear();
     }
 }
