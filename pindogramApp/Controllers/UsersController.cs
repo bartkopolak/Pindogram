@@ -47,6 +47,8 @@ namespace pindogramApp.Controllers
                 return BadRequest(new { message = "Niepoprawny login albo hasło" });
             if (user.Group == null)
                 return BadRequest(new { message = $"Użytkownik {user.FirstName} nie jest przypisany do rzadnej z grup. Skontaktuj się z administratorem" });
+            if (!user.IsActive)
+                return BadRequest(new { message = $"Konto nie zostało aktywowane. Skontaktuj się z administratorem" });
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
@@ -55,11 +57,11 @@ namespace pindogramApp.Controllers
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, user.Id.ToString()),
-                    new Claim(user.Group.Name, ""), 
+                    new Claim(user.Group.Name, ""),
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                };
+            };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
 
@@ -91,6 +93,46 @@ namespace pindogramApp.Controllers
                 // return error message if there was an exception
                 return BadRequest(new { message = ex.Message });
             }
+        }
+
+        [Authorize(Policy = "ADMIN")]
+        [HttpPost("[Action]/{userId}")]
+        public IActionResult AddUserToUserGroup(int userId)
+        {
+            _userService.AddUserToUserGroup(userId);
+
+            return Ok(new { message = "Użytkownik został dodany do grupy 'USER'" });
+        }
+
+        [Authorize(Policy = "ADMIN")]
+        [HttpPost("[Action]/{userId}")]
+        public IActionResult AddUserToAdminGroup(int userId)
+        {
+            _userService.AddUserToAdminGroup(userId);
+
+            return Ok(new { message = "Użytkownik został dodany do grupy 'ADMIN'" });
+        }
+
+        [Authorize(Policy = "ADMIN")]
+        [HttpPost("[Action]/{Id}")]
+        public IActionResult ActiveUser(int Id)
+        {
+            var user = _userService.ActiveUser(Id);
+            var userDtos = _mapper.Map<UserDto>(user);
+
+            return Ok(userDtos);
+        }
+
+        [Authorize(Policy = "ADMIN")]
+        [HttpGet("[Action]")]
+        public IActionResult GetAllUnactivatedUsers()
+        {
+            var users = _userService.GetAllUnactivatedUsers();
+            var usersDtos = _mapper.Map<IList<UserDto>>(users);
+            if(usersDtos == null)
+                return Ok(new { message = "Nie ma nie zaakceptowanych użytkwoników'" });
+
+            return Ok(usersDtos);
         }
 
         [Authorize(Policy = "ADMIN")]

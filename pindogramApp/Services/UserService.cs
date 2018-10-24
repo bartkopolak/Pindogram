@@ -18,6 +18,26 @@ namespace pindogramApp.Services
             _context = context;
         }
 
+        public void AddUserToAdminGroup(int userId)
+        {
+            var user = _context.Users.FirstOrDefault(x => x.Id == userId);
+            if (user == null) throw new AppException($"Nie ma usera o id równym {userId}");
+
+            user.GroupId = 1;
+            _context.Users.Update(user);
+            _context.SaveChanges();
+        }
+
+        public void AddUserToUserGroup(int userId)
+        {
+            var user = _context.Users.FirstOrDefault(x => x.Id == userId);
+            if (user == null) throw new AppException($"Nie ma usera o id równym {userId}");
+
+            user.GroupId = 2;
+            _context.Users.Update(user);
+            _context.SaveChanges();
+        }
+
         public User Authenticate(string username, string password)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
@@ -34,7 +54,7 @@ namespace pindogramApp.Services
                 return null;
 
             user.Group = _context.Groups.FirstOrDefault(x => x.Id == user.GroupId);
-            
+
             // authentication successful
             return user;
         }
@@ -42,6 +62,24 @@ namespace pindogramApp.Services
         public IEnumerable<User> GetAll()
         {
             return _context.Users;
+        }
+
+        public IEnumerable<User> GetAllUnactivatedUsers()
+        {
+            return _context.Users.Where(x => !x.IsActive);
+        }
+
+        public User ActiveUser(int id)
+        {
+            var user = _context.Users.FirstOrDefault(x => x.Id == id);
+            if (user != null)
+            {
+                user.IsActive = true;
+                _context.Users.Update(user);
+                _context.SaveChanges();
+                return user;
+            }
+            throw new AppException($"Nie ma usera o id równym {id}");
         }
 
         public User GetById(int id)
