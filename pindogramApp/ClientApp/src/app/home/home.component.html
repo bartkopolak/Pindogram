@@ -9,14 +9,14 @@
         dodano: {{meme.dateAdded | date: 'd-M-y, HH:mm'}}
       </p>
       <div class="btn-rates">
-        <button type="button" class="btn btn-light" [ngClass]="{'active': meme.activeUp}" (click)="upvoteMeme(meme.id)">
-          UP
+        <button type="button" class="up-vote" [ngClass]="{'active': meme.activeUp}" (click)="upvoteMeme(meme.id)">
+
         </button>
-        <button type="button" class="btn btn-light" [ngClass]="{'active': meme.activeDown}" (click)="downvoteMeme(meme.id)">
-          DOWN
+        <button type="button" class="down-vote" [ngClass]="{'active': meme.activeDown}" (click)="downvoteMeme(meme.id)">
+
         </button>
-        <button type="button" class="btn btn-danger" (click)="deleteMeme(meme)">
-          DEL
+        <button type="button" class="delete-button" (click)="deleteMeme(meme)">
+
         </button>
       </div>
     </div>

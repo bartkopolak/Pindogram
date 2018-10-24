@@ -29,6 +29,21 @@ namespace pindogramApp.Helpers
                         })); ;
             CreateMap<MemeDto, Meme>()
                 .ForMember(d => d.Image, o => o.MapFrom(s => Convert.FromBase64String(s.Image)));
+
+            CreateMap<Comment, CommentDto>().ForMember(d => d.Author,
+
+                    map => map.MapFrom(
+
+                        source => new AuthorDto
+
+                        {
+                            Id = source.Author.Id,
+                            FirstName = source.Author.FirstName,
+                            LastName = source.Author.LastName,
+                            Username = source.Author.Username
+
+                        }));
+            CreateMap<CommentDto, Comment>();
         }
     }
 }

@@ -12,6 +12,38 @@
     width: 700px;
     margin: -90px auto 0px auto;
     padding: 120px 100px 5px 100px;
+    .delete-button{
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 8px;
+      background-image: url("../../assets/cancel_icon.png");
+      background-size: cover;
+      background-repeat: no-repeat;
+      vertical-align: middle;
+      background-color: white;
+      cursor: pointer;
+    }
+    .up-vote{
+      width: 40px;
+      height: 40px;
+      border: none;
+      outline: none;
+      background-image: url("../../assets/ok_vote.png");
+      background-size: cover;
+      background-repeat: no-repeat;
+      vertical-align: middle;
+      margin-right: 8px;
+      background-color: transparent;
+      cursor: pointer;
+    }
+
+    .down-vote{
+      @extend .up-vote;
+      background-image: url("../../assets/down_vote.png");
+
+    }
+
     .meme-wrap{
       margin-bottom: 45px;
       .btn{

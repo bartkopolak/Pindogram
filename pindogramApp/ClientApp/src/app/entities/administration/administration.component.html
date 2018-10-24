@@ -1,4 +1,8 @@
 <div class="administration-wrapper">
+  <div class="memes-top-view">
+    <img src="../../../assets/luftwafe.png" alt="best">
+
+  </div>
   <h1>Cuckpit administratoracyjny</h1>
   <ngb-tabset>
     <ngb-tab>
@@ -14,12 +18,12 @@
           <span class="meme-index">{{i + 1}}</span>
           <img class="img" [src]="'data:image/jpeg;base64,' + meme.image" alt="img">
           <div class="info-wrapper">
-            <p>{{meme.title}}</p>
+            <h4 class="info-title">{{meme.title}}</h4>
             <p>Autor:{{meme.author.username}} data dodania: {{meme.dateAdded | date: 'd-M-y, HH:mm'}}</p>
           </div>
           <div class="buttons-wrapper">
-            <button class="btn btn-success" (click)="approveMeme(meme.id)">OK</button>
-            <button class="btn btn-danger" (click)="deleteMeme(meme)">X</button>
+            <button class="ok-button" (click)="approveMeme(meme.id)"></button>
+            <button class="negative-button" (click)="deleteMeme(meme)"></button>
           </div>
         </div>
       </ng-template>

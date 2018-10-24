@@ -15,5 +15,6 @@ namespace pindogramApp.Entities
         public DbSet<User> Users { get; set; }
         public DbSet<Meme> Memes { get; set; }
         public DbSet<MemeRate> MemeRates { get; set; }
+        public DbSet<Comment> Comments { get; set; }
     }
 }
