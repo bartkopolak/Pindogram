@@ -220,6 +220,38 @@ namespace pindogramApp.Controllers
             }
         }
 
+        [Authorize(Policy = "ADMIN")]
+        [HttpGet("[Action]")]
+        public IActionResult GetNumerOfAllLikesAndDislikes()
+        {
+            try
+            {
+                var rate = _memeService.GetTotalNumerOfLikesAndDislikes();
+                return Ok(rate);
+            }
+            catch (AppException ex)
+            {
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [Authorize(Policy = "ADMIN")]
+        [HttpGet("[Action]")]
+        public IActionResult GetDateToNumberOfApprovedMemes()
+        {
+            try
+            {
+                var numberOfApprovals = _memeService.GetDateToNumberOfApprovedMemes();
+                return Ok(numberOfApprovals);
+            }
+            catch (AppException ex)
+            {
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
         // DELETE: api/Memes/5
         [Authorize(Policy = "ADMIN")]
         [HttpDelete("[Action]/{id}")]

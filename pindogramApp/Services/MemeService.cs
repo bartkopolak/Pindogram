@@ -104,6 +104,38 @@ namespace pindogramApp.Services
             return upvotedCount - downvotedCount;
         }
 
+        public IEnumerable<TotalNumberOfLikesDislikesDto> GetTotalNumerOfLikesAndDislikes()
+        {
+            List<TotalNumberOfLikesDislikesDto> totalNumber = new List<TotalNumberOfLikesDislikesDto>();
+
+            var likes = _context.MemeRates.Count(x => x.isUpvote);
+            var dislikes = _context.MemeRates.Count(x => !x.isUpvote);
+            totalNumber.Add(new TotalNumberOfLikesDislikesDto { Name = "Like", Value = likes });
+            totalNumber.Add(new TotalNumberOfLikesDislikesDto { Name = "Dislike", Value = dislikes });
+            return totalNumber;
+        }
+
+        public IEnumerable<DateToApprovedMemesDto> GetDateToNumberOfApprovedMemes()
+        {
+            List<DateToApprovedMemesDto> totalNumberOfApproved = new List<DateToApprovedMemesDto>();
+
+            var memes = _context.Memes.Select(x => x.DateAdded);
+
+            foreach (DateTime day in EachDay(new DateTime(2018, 10, 17), DateTime.Now))
+            {
+                var number = memes.Count(x => x.Year == day.Year && x.Month == day.Month && x.Day == day.Day);
+                totalNumberOfApproved.Add(new DateToApprovedMemesDto { Date = day.ToShortDateString(), NumberOfApproved = number });
+            }
+
+            return totalNumberOfApproved;
+        }
+
+        private IEnumerable<DateTime> EachDay(DateTime from, DateTime thru)
+        {
+            for (var day = from.Date; day.Date <= thru.Date; day = day.AddDays(1))
+                yield return day;
+        }
+
         public bool IsActiveUp(int memeId, int userId)
         {
             return _context.MemeRates.Any(x => x.MemeId == memeId && x.UserId == userId && x.isUpvote);
@@ -126,7 +158,7 @@ namespace pindogramApp.Services
             return newLike;
         }
 
-        public IEnumerable<Meme> GetAllApproved() => _context.Memes.Where(x => x.IsApproved).OrderByDescending(x=> x.DateAdded);
+        public IEnumerable<Meme> GetAllApproved() => _context.Memes.Where(x => x.IsApproved).OrderByDescending(x => x.DateAdded);
 
         public IEnumerable<Meme> GetAllUnapproved() => _context.Memes.Where(x => !x.IsApproved).OrderByDescending(x => x.DateAdded);
 
