@@ -2,22 +2,16 @@
   <div class="memes-container">
     <div class="meme-wrap" *ngFor="let meme of memes; trackBy: trackId">
       <h4>{{meme.title}}</h4>
-      <img [src]="'data:image/jpeg;base64,' + meme.image" width="500px" alt="img"/>
+      <img [src]="'data:image/jpeg;base64,' + meme.image" width="500px" [routerLink]="['/meme', meme.id]" alt="img"/>
       <p>
         Autor: {{meme.author.username}},
         punkty: {{meme.likes}}
         dodano: {{meme.dateAdded | date: 'd-M-y, HH:mm'}}
       </p>
       <div class="btn-rates">
-        <button type="button" class="up-vote" [ngClass]="{'active': meme.activeUp}" (click)="upvoteMeme(meme.id)">
-
-        </button>
-        <button type="button" class="down-vote" [ngClass]="{'active': meme.activeDown}" (click)="downvoteMeme(meme.id)">
-
-        </button>
-        <button type="button" class="delete-button" (click)="deleteMeme(meme)">
-
-        </button>
+        <button type="button" class="up-vote" [ngClass]="{'active': meme.activeUp}" (click)="upvoteMeme(meme.id)"></button>
+        <button type="button" class="down-vote" [ngClass]="{'active': meme.activeDown}" (click)="downvoteMeme(meme.id)"></button>
+        <button type="button" class="delete-button" (click)="deleteMeme(meme)"></button>
       </div>
     </div>
   </div>

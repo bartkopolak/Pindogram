@@ -5,6 +5,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HomeComponent } from './home.component';
 import { SharedModule } from '../shared/shared.module';
 import { AddMemesComponent } from './memes/add-memes.component';
+import { DetailMemeComponent } from './memes/detail-meme.component';
 
 @NgModule({
   imports: [
@@ -13,7 +14,8 @@ import { AddMemesComponent } from './memes/add-memes.component';
   declarations: [
     HomeComponent,
     AddMemesComponent,
-    DeleteMemesComponent
+    DeleteMemesComponent,
+    DetailMemeComponent
   ],
   entryComponents: [
     AddMemesComponent,
