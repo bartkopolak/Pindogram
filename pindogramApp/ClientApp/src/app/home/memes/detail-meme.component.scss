@@ -1,4 +1,4 @@
-.home-wrapper{
+.detail-meme-wrapper{
   position: absolute;
   top: 0;
   width: 100%;
@@ -9,7 +9,7 @@
   .memes-container{
     display: block;
     background: rgba(241, 241, 241,0.9);
-    width: 700px;
+    width: 900px;
     margin: -90px auto 0px auto;
     padding: 120px 100px 5px 100px;
     .delete-button{
@@ -17,7 +17,7 @@
       height: 40px;
       border: none;
       border-radius: 8px;
-      background-image: url("../../assets/cancel_icon.png");
+      background-image: url("../../../assets/cancel_icon.png");
       background-size: cover;
       background-repeat: no-repeat;
       vertical-align: middle;
@@ -29,7 +29,7 @@
       height: 40px;
       border: none;
       outline: none;
-      background-image: url("../../assets/ok_vote.png");
+      background-image: url("../../../assets/ok_vote.png");
       background-size: cover;
       background-repeat: no-repeat;
       vertical-align: middle;
@@ -37,13 +37,10 @@
       background-color: transparent;
       cursor: pointer;
     }
-
     .down-vote{
       @extend .up-vote;
-      background-image: url("../../assets/down_vote.png");
-
+      background-image: url("../../../assets/down_vote.png");
     }
-
     .meme-wrap{
       margin-bottom: 45px;
       img{
@@ -55,6 +52,9 @@
           color: blue;
         }
       }
+    }
+    .card{
+      margin-bottom: 20px;
     }
   }
 }

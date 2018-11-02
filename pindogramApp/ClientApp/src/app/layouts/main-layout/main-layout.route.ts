@@ -1,3 +1,4 @@
+import { DETAIL_MEME_ROUTE } from './../../home/memes/detail-meme.route';
 import { Route } from '@angular/router';
 import { MainLayoutComponent } from './main-layout.component';
 import { HOME_ROUTE } from '../../home/home.route';
@@ -9,7 +10,8 @@ export const mainLayoutRoute: Route = {
     component: MainLayoutComponent,
     children: [
       HOME_ROUTE,
-      ADMINISTRATION_ROUTE
+      ADMINISTRATION_ROUTE,
+      DETAIL_MEME_ROUTE
     ],
     canActivate: [AuthGuard]
 

@@ -1,0 +1,40 @@
+<div class="detail-meme-wrapper" *ngIf="meme">
+  <div class="memes-container">
+    <div class="meme-wrap">
+      <h4>{{meme.title}}</h4>
+      <img [src]="'data:image/jpeg;base64,' + meme.image" width="700px" alt="img" />
+      <p>
+        Autor: {{meme.author.username}},
+        punkty: {{meme.likes}}
+        dodano: {{meme.dateAdded | date: 'd-M-y, HH:mm'}}
+      </p>
+      <div class="btn-rates">
+        <button type="button" class="up-vote" [ngClass]="{'active': meme.activeUp}" (click)="upvoteMeme(meme.id)"></button>
+        <button type="button" class="down-vote" [ngClass]="{'active': meme.activeDown}" (click)="downvoteMeme(meme.id)"></button>
+      </div>
+    </div>
+    <hr>
+    <div class="add-comment-wrap">
+      <div class="form-group">
+        <label for="addComment">Dodaj komentarz</label>
+        <textarea class="form-control" id="addCOmment" rows="2" [(ngModel)]="commentContent"></textarea>
+        <br>
+        <button type="button" class="btn btn-primary" [disabled]="commentContent.length === 0" (click)="addComment()">Dodaj</button>
+      </div>
+    </div>
+    <hr>
+    <p>Komentarze: {{comments?.length}}</p>
+    <div class="card" *ngFor="let comment of comments; trackBy commentId">
+      <div class="card-body">
+        <h6 class="card-subtitle mb-2 text-muted">
+          <a class="close" (click)="deleteComment(comment.id)">&times;</a>
+          <a class="close" (click)="commentToEdit(comment)">&infin;</a>
+          <a class="close" *ngIf="comment?.toEdit" (click)="editComment(comment)">&radic;</a>
+          <b>{{comment.author.username}}</b>
+        </h6>
+        <input type="text" class="form-control" *ngIf="comment?.toEdit" [(ngModel)]="comment.content">
+        <p *ngIf="!comment?.toEdit">{{comment.content}}</p>
+      </div>
+    </div>
+  </div>
+</div>

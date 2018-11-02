@@ -1,3 +1,4 @@
+import { AuthGuard } from './shared/auth.guard';
 import './vendor.ts';
 
 import { AppComponent } from './app.component';
@@ -32,6 +33,7 @@ import { ErrorInterceptor } from './shared/error.interceptor';
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    AuthGuard,
     MessageService
   ],
   bootstrap: [AppComponent]
