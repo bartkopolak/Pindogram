@@ -48,7 +48,7 @@ namespace pindogramApp.Controllers
             if (user.Group == null)
                 return BadRequest(new { message = $"Użytkownik {user.FirstName} nie jest przypisany do rzadnej z grup. Skontaktuj się z administratorem" });
             if (!user.IsActive)
-                return BadRequest(new { message = $"Konto nie zostało aktywowane. Skontaktuj się z administratorem" });
+                return BadRequest(new { message = "Konto oczekuje na aktywację" });
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
@@ -57,7 +57,7 @@ namespace pindogramApp.Controllers
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, user.Id.ToString()),
-                    new Claim("group",user.Group.Name),
+                    new Claim(user.Group.Name,"")
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

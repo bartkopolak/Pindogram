@@ -21,5 +21,7 @@ namespace pindogramApp.Services.Interfaces
         User GetLoggedUser(string strAutId);
         bool IsActiveUp(int memeId, int userId);
         bool IsActiveDown(int memeId, int userId);
+        IEnumerable<TotalNumberOfLikesDislikesDto> GetTotalNumerOfLikesAndDislikes();
+        IEnumerable<DateToApprovedMemesDto> GetDateToNumberOfApprovedMemes();
     }
 }
