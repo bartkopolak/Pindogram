@@ -1,3 +1,4 @@
+import { RouterModule } from '@angular/router';
 import { AlertComponent } from './alert/alert.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -10,7 +11,8 @@ import { HttpClientModule } from '@angular/common/http';
       FormsModule,
       ReactiveFormsModule,
       CommonModule,
-      HttpClientModule
+      HttpClientModule,
+      RouterModule
     ],
     declarations: [
       AlertComponent
@@ -20,7 +22,8 @@ import { HttpClientModule } from '@angular/common/http';
       NgbModule,
       FormsModule,
       ReactiveFormsModule,
-      CommonModule
+      CommonModule,
+      RouterModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 
