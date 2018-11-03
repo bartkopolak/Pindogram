@@ -1,3 +1,4 @@
+import { AuthGuard } from './../../shared/auth.guard';
 import { UserService } from './../../shared/users/users.service';
 import { Subscription } from 'rxjs/Subscription';
 import { MessageService } from './../../shared/message.service';
@@ -46,7 +47,8 @@ export class AdministrationComponent implements OnInit, OnDestroy {
     private alertService: AlertService,
     private modalService: NgbModal,
     private messageService: MessageService,
-    private userService: UserService
+    private userService: UserService,
+    private authenticate: AuthGuard
   ) {
     this.subscription = this.messageService.getMessage().subscribe(message => {
       this.loadUnapproved();
@@ -103,20 +105,49 @@ export class AdministrationComponent implements OnInit, OnDestroy {
   }
 
   changeUserStatus(user: User) {
-    user.isActive = !user.isActive;
-    this.userService.update(user).subscribe(
-      response => {
-        this.loadUsers();
-      }
-    );
+    if (user.isActive) {
+      this.userService.deactiveUser(user.id).subscribe(
+        (res: HttpResponse<any>) => {
+          this.onSuccess('Użytkownik został dezaktywowany');
+          this.loadUsers();
+        },
+        (res: HttpErrorResponse) => this.onError(res.message)
+      );
+    } else {
+      this.userService.activeUser(user.id).subscribe(
+        (res: HttpResponse<any>) => {
+          this.onSuccess('Użytkownik został aktywowany');
+          this.loadUsers();
+        },
+        (res: HttpErrorResponse) => this.onError(res.message)
+      );
+    }
   }
 
   changeUserGroup(user: User) {
-    this.userService.update(user).subscribe(
-      response => {
-        this.loadUsers();
-      }
-    );
+    switch (user.group) {
+      case 'ADMIN':
+        this.userService.addUserToAdminGroup(user.id).subscribe(
+          (res: HttpResponse<any>) => {
+            this.onSuccess(res.body.message);
+            this.loadUsers();
+          },
+          (res: HttpErrorResponse) => this.onError(res.message)
+        );
+        break;
+        case 'USER':
+        this.userService.addUserToUserGroup(user.id).subscribe(
+          (res: HttpResponse<any>) => {
+            this.onSuccess(res.body.message);
+            this.loadUsers();
+          },
+          (res: HttpErrorResponse) => this.onError(res.message)
+        );
+        break;
+      default:
+        this.onError('Brak grupy!');
+        break;
+    }
   }
 
   deleteUser(id: number) {
@@ -146,6 +177,10 @@ export class AdministrationComponent implements OnInit, OnDestroy {
     }, cancel => {});
   }
 
+  isCurrentUser() {
+    return this.authenticate.hasAnyAuthority().id;
+  }
+
   trackId(index: number, item: Memes) {
     return item.id;
   }
@@ -160,6 +195,10 @@ export class AdministrationComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  private onSuccess(message) {
+    this.alertService.success(message);
   }
 
   private onError(error) {

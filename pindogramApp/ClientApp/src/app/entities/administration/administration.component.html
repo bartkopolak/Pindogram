@@ -22,13 +22,13 @@
               <td><span>{{user.firstName}}</span></td>
               <td><span>{{user.lastName}}</span></td>
               <td><span>{{user.username}}</span></td>
-              <td><button class="circle" [ngClass]="{'activated': user.isActive}" (click)="changeUserStatus(user)"></button></td>
+              <td><button class="circle" [ngClass]="{'activated': user.isActive}" [disabled]="user.id === isCurrentUser()" (click)="changeUserStatus(user)"></button></td>
               <td>
-                <select class="form-control" name="group" [(ngModel)]="user.group" (change)="changeUserGroup(user)">
+                <select class="form-control" name="group" [(ngModel)]="user.group" [disabled]="user.id === isCurrentUser()" (change)="changeUserGroup(user)">
                     <option *ngFor="let group of groups" [value]="group.id">{{group.name}}</option>
                 </select>
               </td>
-              <td><button class="btn-delete-user" [disabled]="user.group === 'ADMIN'" (click)="deleteUser(user.id)"></button></td>
+              <td><button class="btn-delete-user" [disabled]="user.id === isCurrentUser()" (click)="deleteUser(user.id)"></button></td>
             </tr>
           </tbody>
         </table>
