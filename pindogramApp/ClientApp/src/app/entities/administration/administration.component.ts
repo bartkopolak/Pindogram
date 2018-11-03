@@ -1,3 +1,4 @@
+import { UserService } from './../../shared/users/users.service';
 import { Subscription } from 'rxjs/Subscription';
 import { MessageService } from './../../shared/message.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -7,6 +8,7 @@ import { MemesService } from '../../home';
 import { Memes } from '../../home/memes/memes';
 import { AlertService } from '../../shared/alert/alert.service';
 import { DeleteMemesComponent } from '../../home/memes/delete-memes.component';
+import { User } from '../../shared';
 
 @Component({
   selector: 'app-administration',
@@ -19,6 +21,7 @@ import { DeleteMemesComponent } from '../../home/memes/delete-memes.component';
 export class AdministrationComponent implements OnInit, OnDestroy {
 
   memes: Memes[];
+  users: User[];
   subscription: Subscription;
   memeActivated = [
     {
@@ -79,45 +82,96 @@ export class AdministrationComponent implements OnInit, OnDestroy {
     domain: ['#5AA454', '#A10A28']
   };
 
+  groups = [
+    {id: 'ADMIN', name: 'Administrator'},
+    {id: 'USER', name: 'Użytkownik'}
+  ];
+
   constructor(
     private memesService: MemesService,
     private alertService: AlertService,
     private modalService: NgbModal,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private userService: UserService
   ) {
     this.subscription = this.messageService.getMessage().subscribe(message => {
-      this.loadAll();
+      this.loadUnapproved();
     });
   }
 
-  loadAll() {
-    this.memesService.getAllUnapproved().subscribe(
-      (res: HttpResponse<Memes[]>) => {
-        this.memes = res.body;
-      },
-      (res: HttpErrorResponse) => this.onError(res.message)
-    );
-
-    this.memesService.getNumerOfAllLikesAndDislikes().subscribe(
-      (res: HttpResponse<any>) => {
-        this.memeRates = res.body;
-      },
-      (res: HttpErrorResponse) => this.onError(res.message)
-    );
-
+  loadApprovedMemesChartData() {
     this.memesService.getDateToNumberOfApprovedMemes().subscribe(
       (res: HttpResponse<any>) => {
-        console.log('res', res);
         // this.memeActivated = res.body;
       },
       (res: HttpErrorResponse) => this.onError(res.message)
     );
   }
 
+  loadLikeDislikeChartData() {
+    this.memesService.getNumerOfAllLikesAndDislikes().subscribe(
+      (res: HttpResponse<any>) => {
+        this.memeRates = res.body;
+      },
+      (res: HttpErrorResponse) => this.onError(res.message)
+    );
+  }
+
+  loadUnapproved() {
+    this.memesService.getAllUnapproved().subscribe(
+      (res: HttpResponse<Memes[]>) => {
+        this.memes = res.body;
+      },
+      (res: HttpErrorResponse) => this.onError(res.message)
+    );
+  }
+
+  loadUsers() {
+    this.userService.getAll().subscribe(
+      (response) => {
+        this.users = response;
+      },
+      (res: HttpErrorResponse) => this.onError(res.message)
+    );
+  }
+
+  loadAll() {
+    this.loadUsers();
+    this.loadUnapproved();
+    this.loadLikeDislikeChartData();
+    this.loadApprovedMemesChartData();
+  }
+
+  changeUserStatus(user: User) {
+    user.isActive = !user.isActive;
+    this.userService.update(user).subscribe(
+      response => {
+        this.loadUsers();
+      }
+    );
+  }
+
+  changeUserGroup(user: User) {
+    this.userService.update(user).subscribe(
+      response => {
+        this.loadUsers();
+      }
+    );
+  }
+
+  deleteUser(id: number) {
+    this.userService.delete(id).subscribe(
+      response => {
+        this.loadUsers();
+      }
+    );
+  }
+
   approveMeme(id: number) {
     this.memesService.approveMeme(id).subscribe((response) => {
       this.alertService.success(response.body.message);
-      this.loadAll();
+      this.loadUnapproved();
+      this.loadApprovedMemesChartData();
     },
     error => {
       this.alertService.error(error);
@@ -128,11 +182,15 @@ export class AdministrationComponent implements OnInit, OnDestroy {
     const modalRef = this.modalService.open(DeleteMemesComponent as Component, {centered: true});
     modalRef.componentInstance.meme = meme;
     modalRef.result.then(() => {
-      this.loadAll();
+      this.loadUnapproved();
     }, cancel => {});
   }
 
   trackId(index: number, item: Memes) {
+    return item.id;
+  }
+
+  userId(index: number, item: User) {
     return item.id;
   }
 

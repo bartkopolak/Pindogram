@@ -10,6 +10,20 @@
       opacity: 0.2;
     }
   }
+  .table{
+    .circle{
+      display: block;
+      background: red;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      margin-left: 25px;
+      cursor: pointer;
+      &.activated{
+        background: green;
+      }
+    }
+  }
   .memes-wrapper{
     background: rgba(222, 220, 220, 0.9);
     width: 950px;
