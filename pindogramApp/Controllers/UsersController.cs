@@ -125,6 +125,16 @@ namespace pindogramApp.Controllers
         }
 
         [Authorize(Policy = "ADMIN")]
+        [HttpPost("[Action]/{Id}")]
+        public IActionResult DeactiveUser(int Id)
+        {
+            var user = _userService.DeactiveUser(Id);
+            var userDtos = _mapper.Map<UserDto>(user);
+
+            return Ok(userDtos);
+        }
+
+        [Authorize(Policy = "ADMIN")]
         [HttpGet("[Action]")]
         public IActionResult GetAllUnactivatedUsers()
         {

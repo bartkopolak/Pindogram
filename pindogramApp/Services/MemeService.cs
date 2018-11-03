@@ -121,10 +121,10 @@ namespace pindogramApp.Services
 
             var memes = _context.Memes.Select(x => x.DateAdded);
 
-            foreach (DateTime day in EachDay(new DateTime(2018, 10, 17), DateTime.Now))
+            foreach (DateTime day in EachDay(DateTime.Now.AddDays(-10), DateTime.Now))
             {
                 var number = memes.Count(x => x.Year == day.Year && x.Month == day.Month && x.Day == day.Day);
-                totalNumberOfApproved.Add(new DateToApprovedMemesDto { Date = day.ToShortDateString(), NumberOfApproved = number });
+                totalNumberOfApproved.Add(new DateToApprovedMemesDto { Name = day.ToShortDateString(), Value = number });
             }
 
             return totalNumberOfApproved;

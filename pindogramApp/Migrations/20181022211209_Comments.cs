@@ -27,7 +27,7 @@ namespace pindogramApp.Migrations
                         column: x => x.AuthorId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Comments_Memes_MemeId",
                         column: x => x.MemeId,

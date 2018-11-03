@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pindogramApp.Entities;
 
 namespace pindogramApp.Migrations
@@ -25,13 +24,13 @@ namespace pindogramApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AuthorId");
+                    b.Property<int>("AuthorId");
 
                     b.Property<string>("Content");
 
                     b.Property<DateTime>("DateAdded");
 
-                    b.Property<int?>("MemeId");
+                    b.Property<int>("MemeId");
 
                     b.HasKey("Id");
 
@@ -80,14 +79,15 @@ namespace pindogramApp.Migrations
                 });
 
             modelBuilder.Entity("pindogramApp.Entities.MemeRate", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy",
+                        SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("MemeId");
+                    b.Property<int>("MemeId");
 
-                    b.Property<int?>("UserId");
+                    b.Property<int>("UserId");
 
                     b.Property<bool>("isUpvote");
 
@@ -132,11 +132,13 @@ namespace pindogramApp.Migrations
                 {
                     b.HasOne("pindogramApp.Entities.User", "Author")
                         .WithMany()
-                        .HasForeignKey("AuthorId");
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("pindogramApp.Entities.Meme", "Meme")
                         .WithMany()
-                        .HasForeignKey("MemeId");
+                        .HasForeignKey("MemeId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("pindogramApp.Entities.Meme", b =>
@@ -151,11 +153,13 @@ namespace pindogramApp.Migrations
                 {
                     b.HasOne("pindogramApp.Entities.Meme", "Meme")
                         .WithMany()
-                        .HasForeignKey("MemeId");
+                        .HasForeignKey("MemeId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("pindogramApp.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("pindogramApp.Entities.User", b =>

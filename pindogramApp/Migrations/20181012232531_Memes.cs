@@ -43,15 +43,15 @@ namespace pindogramApp.Migrations
                 {
                     table.PrimaryKey("PK_MemeRates", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MemeRates_Memes_MemeId",
-                        column: x => x.MemeId,
-                        principalTable: "Memes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_MemeRates_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MemeRates_Memes_MemeId",
+                        column: x => x.MemeId,
+                        principalTable: "Memes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
