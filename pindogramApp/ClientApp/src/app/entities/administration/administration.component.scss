@@ -11,18 +11,46 @@
     }
   }
   .table{
-    .circle{
-      display: block;
-      background: red;
-      width: 15px;
-      height: 15px;
-      border-radius: 50%;
-      margin-left: 25px;
-      cursor: pointer;
-      &.activated{
-        background: green;
+    tbody{
+      tr{
+        td{
+          span{
+            display: block;
+            margin-top: 6px;
+          }
+          .circle{
+            display: block;
+            background: red;
+            width: 15px;
+            height: 15px;
+            border: none;
+            outline: none;
+            border-radius: 50%;
+            margin-left: 25px;
+            margin-top: 12px;
+            cursor: pointer;
+            &.activated{
+              background: green;
+            }
+          }
+          .btn-delete-user{
+            display: block;
+            border: none;
+            outline: none;
+            width: 24px;
+            height: 24px;
+            margin-top: 6px;
+            background: url('../../../assets/waste-bin.svg');
+            cursor: pointer;
+            &[disabled]{
+              opacity: 0.6;
+              cursor: not-allowed;
+            }
+          }
+        }
       }
     }
+
   }
   .memes-wrapper{
     background: rgba(222, 220, 220, 0.9);
@@ -42,8 +70,8 @@
       margin: 0px 12px 0px 12px;
     }
     .ok-button{
-      width: 32px;
-      height: 32px;
+      width: 35px;
+      height: 35px;
       border: none;
       border-radius: 8px;
       margin: 0 12px 0 12px;
@@ -54,8 +82,8 @@
       background-color: white;
     }
     .negative-button{
-      width: 32px;
-      height: 32px;
+      width: 35px;
+      height: 35px;
       border: none;
       border-radius: 8px;
       background-image: url("../../../assets/cancel_icon.png");
