@@ -1,6 +1,5 @@
 .administration-wrapper{
   padding: 15px;
-
   .memes-top-view{
     img{
       width: 300px;
@@ -11,7 +10,6 @@
       opacity: 0.2;
     }
   }
-
   .memes-wrapper{
     background: rgba(222, 220, 220, 0.9);
     width: 950px;
@@ -28,9 +26,7 @@
       font-weight: bold;
       padding: 4px;
       margin: 0px 12px 0px 12px;
-
     }
-
     .ok-button{
       width: 32px;
       height: 32px;
@@ -43,7 +39,6 @@
       vertical-align: middle;
       background-color: white;
     }
-
     .negative-button{
       width: 32px;
       height: 32px;
@@ -55,7 +50,6 @@
       vertical-align: middle;
       background-color: white;
     }
-
     .img{
       display: inline-block;
       width: 250px;
@@ -71,9 +65,7 @@
       vertical-align: middle;
       width: 450px;
       margin: 0 25px;
-
       .info-title{
-
         font-size: 24px;
         overflow: hidden;
         white-space: nowrap;
