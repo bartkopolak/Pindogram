@@ -48,7 +48,7 @@ export class RegisterModalComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          this.alertService.success('Registration successful', true);
+          this.alertService.success('Rejestracja zakończona pomyślnie', true);
           this.router.navigate(['/login']);
           this.activeModal.dismiss('cancel');
         },
