@@ -9,52 +9,46 @@
   .memes-container{
     display: block;
     background: rgba(241, 241, 241,0.9);
-    width: 900px;
+    width: 700px;
     margin: -90px auto 0px auto;
     padding: 120px 100px 5px 100px;
-    .delete-button{
-      width: 40px;
-      height: 40px;
-      border: none;
-      border-radius: 8px;
-      background-image: url("../../../assets/cancel_icon.png");
-      background-size: cover;
-      background-repeat: no-repeat;
-      vertical-align: middle;
-      background-color: white;
-      cursor: pointer;
-    }
-    .up-vote{
-      width: 40px;
-      height: 40px;
-      border: none;
-      outline: none;
-      background-image: url("../../../assets/ok_vote.png");
-      background-size: cover;
-      background-repeat: no-repeat;
-      vertical-align: middle;
-      margin-right: 8px;
-      background-color: transparent;
-      cursor: pointer;
-    }
-    .down-vote{
-      @extend .up-vote;
-      background-image: url("../../../assets/down_vote.png");
-    }
     .meme-wrap{
       margin-bottom: 45px;
       img{
         cursor: pointer;
       }
-      .btn{
-        margin-right: 10px;
-        &.active{
-          color: blue;
+      .btn-rates{
+        .buttons{
+          width: 35px;
+          height: 35px;
+          border: none;
+          outline: none;
+          background-size: cover;
+          background-repeat: no-repeat;
+          vertical-align: middle;
+          background-color: transparent;
+          cursor: pointer;
+        }
+        .delete-button{
+          @extend .buttons;
+          background-image: url("../../../assets/clear-button.svg");
+        }
+        .up-vote{
+          @extend .buttons;
+          margin-right: 8px;
+          background-image: url("../../../assets/drop-up-arrow.svg");
+          &.active{
+            background-image: url("../../../assets/drop-up-arrow-active.svg");
+          }
+        }
+        .down-vote{
+          @extend .up-vote;
+          background-image: url("../../../assets/down-arrow.svg");
+          &.active{
+            background-image: url("../../../assets/down-arrow-active.svg");
+          }
         }
       }
-    }
-    .card{
-      margin-bottom: 20px;
     }
   }
 }

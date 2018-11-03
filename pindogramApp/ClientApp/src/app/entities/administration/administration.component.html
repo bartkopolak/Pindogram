@@ -1,19 +1,43 @@
 <div class="administration-wrapper">
-  <div class="memes-top-view">
-    <img src="../../../assets/luftwafe.png" alt="best">
-
-  </div>
   <h1>Cuckpit administratoracyjny</h1>
   <ngb-tabset>
     <ngb-tab>
       <ng-template ngbTabTitle>Zarządzanie użytkownikami</ng-template>
       <ng-template ngbTabContent>
-        <p>Users table here</p>
+        <table class="table table-hover">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Imię</th>
+              <th scope="col">Nazwisko</th>
+              <th scope="col">Login</th>
+              <th scope="col">Aktywny</th>
+              <th scope="col">Grupa</th>
+              <th scope="col">Usuń</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of users; index as i; trackBy userId">
+              <td scope="row"><span>{{i + 1}}</span></td>
+              <td><span>{{user.firstName}}</span></td>
+              <td><span>{{user.lastName}}</span></td>
+              <td><span>{{user.username}}</span></td>
+              <td><button class="circle" [ngClass]="{'activated': user.isActive}" (click)="changeUserStatus(user)"></button></td>
+              <td>
+                <select class="form-control" name="group" [(ngModel)]="user.group" (change)="changeUserGroup(user)">
+                    <option *ngFor="let group of groups" [value]="group.id">{{group.name}}</option>
+                </select>
+              </td>
+              <td><button class="btn-delete-user" [disabled]="user.group === 'ADMIN'" (click)="deleteUser(user.id)"></button></td>
+            </tr>
+          </tbody>
+        </table>
       </ng-template>
     </ngb-tab>
     <ngb-tab>
       <ng-template ngbTabTitle>Zarządzanie memami</ng-template>
       <ng-template ngbTabContent>
+        <br>
         <div class="memes-wrapper" *ngFor="let meme of memes; index as i; trackBy: trackId">
           <span class="meme-index">{{i + 1}}</span>
           <img class="img" [src]="'data:image/jpeg;base64,' + meme.image" alt="img">
@@ -31,7 +55,21 @@
     <ngb-tab>
       <ng-template ngbTabTitle>Raporty</ng-template>
       <ng-template ngbTabContent>
-        <p>Wykresy here</p>
+        <br>
+        <div class="row">
+          <div class="col-2">
+            <h5>Wykres like/dislike</h5>
+            <ngx-charts-bar-vertical [view]="viewBar" [scheme]="colorScheme" [results]="memeRates" [xAxis]="showXAxis"
+              [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [showGridLines]="showGridLines">
+            </ngx-charts-bar-vertical>
+          </div>
+          <div class="col-8">
+            <h5>Wykres zaakceptowanych memów z ostatnich 10 dni</h5>
+            <ngx-charts-line-chart [view]="viewLine" [scheme]="colorScheme" [results]="memeActivated" [xAxis]="showXAxis"
+              [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel">
+            </ngx-charts-line-chart>
+          </div>
+        </div>
       </ng-template>
     </ngb-tab>
   </ngb-tabset>
