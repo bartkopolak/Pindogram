@@ -10,8 +10,10 @@ namespace pindogramApp.Helpers
     {
         public AutoMapperProfile()
         {
-            CreateMap<User, UserDto>();
+            CreateMap<User, UserDto>()
+                .ForMember(x => x.Group, o => o.MapFrom(s => s.Group.Name));
             CreateMap<UserDto, User>();
+                
             CreateMap<Meme, MemeDto>()
                 .ForMember(d => d.Image, o => o.MapFrom(s => Convert.ToBase64String(s.Image)))
                 .ForMember(d => d.Author,

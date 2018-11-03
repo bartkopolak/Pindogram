@@ -61,7 +61,17 @@ namespace pindogramApp.Services
 
         public IEnumerable<User> GetAll()
         {
-            return _context.Users;
+            var users = new List<User>();
+            var groups = _context.Groups;
+            foreach (var user in _context.Users)
+            {
+                if (user.Group == null)
+                    user.Group = groups.FirstOrDefault(x => x.Id == user.GroupId);
+
+                users.Add(user);
+            }
+
+            return users;
         }
 
         public IEnumerable<User> GetAllUnactivatedUsers()
@@ -82,9 +92,30 @@ namespace pindogramApp.Services
             throw new AppException($"Nie ma usera o id równym {id}");
         }
 
+        public User DeactiveUser(int id)
+        {
+            var user = _context.Users.FirstOrDefault(x => x.Id == id);
+            if (user != null)
+            {
+                user.IsActive = false;
+                _context.Users.Update(user);
+                _context.SaveChanges();
+                return user;
+            }
+            throw new AppException($"Nie ma usera o id równym {id}");
+        }
+
         public User GetById(int id)
         {
-            return _context.Users.Find(id);
+            var user = _context.Users.Find(id);
+            var groups = _context.Groups;
+            if(user != null)
+            {
+                if (user.Group == null)
+                    user.Group = groups.FirstOrDefault(x => x.Id == user.GroupId);
+                return user;
+            }
+            throw new AppException($"Nie ma usera o id równym {id}");
         }
 
         public User Create(User user, string password)

@@ -15,7 +15,8 @@ namespace pindogramApp.Services.Interfaces
         void AddUserToUserGroup(int userId);
         void AddUserToAdminGroup(int userId);
         User ActiveUser(int id);
-        IEnumerable<User> GetAllUnactivatedUsers();
+        User DeactiveUser(int id); 
+         IEnumerable<User> GetAllUnactivatedUsers();
 
     }
 }
