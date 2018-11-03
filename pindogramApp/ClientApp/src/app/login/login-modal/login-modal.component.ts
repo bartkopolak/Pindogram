@@ -49,7 +49,7 @@ export class LoginModalComponent implements OnInit {
           .subscribe(
             data => {
               this.activeModal.dismiss('cancel');
-              this.router.navigate(['/']);
+              this.router.navigate(['']);
             },
             error => {
               this.error = error;

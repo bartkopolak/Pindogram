@@ -6,8 +6,7 @@ export const HOME_ROUTE: Route = {
     path: '',
     component: HomeComponent,
     data: {
-        authorities: [],
-        pageTitle: 'Home page'
+        authorities: ['ADMIN', 'USER']
     },
     canActivate: [AuthGuard]
 };

@@ -6,8 +6,7 @@ export const DETAIL_MEME_ROUTE: Route = {
     path: 'meme/:id',
     component: DetailMemeComponent,
     data: {
-        authorities: [],
-        pageTitle: 'Detail page'
+        authorities: ['ADMIN', 'USER']
     },
     canActivate: [AuthGuard]
 };

@@ -9,7 +9,7 @@ import { UserService } from '../shared/users/users.service';
 import { AlertService } from '../shared/alert/alert.service';
 @NgModule({
   imports: [
-    RouterModule.forRoot([ LOGIN_ROUTE ]),
+    RouterModule.forRoot([LOGIN_ROUTE]),
     SharedModule
   ],
   declarations: [

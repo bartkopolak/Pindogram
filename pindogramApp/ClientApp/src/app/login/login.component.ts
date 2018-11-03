@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     if (this.authenticate.isAuthenticated()) {
-      this.router.navigate(['/']);
+      this.router.navigate(['']);
     }
   }
 

@@ -1,8 +1,8 @@
-<nav class="nav-outlook">
+<nav class="nav-outlook" *ngIf="isAuthenticated()">
     <div class="nav-logo" routerLink="/">Pindogram</div>
     <div class="nav-buttons">
       <p>Zalogowany jako: {{user.firstName}} {{user.lastName}}</p>
-      <button class="btn-pos" routerLink="/administration" placement="bottom" ngbTooltip="Cuckpit administratora"><img src="../../../assets/admin-with-cogwheels.svg"alt="img"></button>
+      <button class="btn-pos" routerLink="/administration" placement="bottom" ngbTooltip="Cuckpit administratora" *appHasAnyAuthority="'ADMIN'"><img src="../../../assets/admin-with-cogwheels.svg" alt="img"></button>
       <button class="btn-pos" (click)="addMeme()" placement="bottom" ngbTooltip="Dodaj mema"><img src="../../../assets/upload.svg" alt="img"></button>
       <button class="btn-pos" (click)="logout()" placement="bottom" ngbTooltip="Wyloguj się"><img src="../../../assets/logout.svg" alt="Wyloguj"></button>
     </div>
