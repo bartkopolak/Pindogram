@@ -23,53 +23,7 @@ export class AdministrationComponent implements OnInit, OnDestroy {
   memes: Memes[];
   users: User[];
   subscription: Subscription;
-  memeActivated = [
-    {
-      'name': 'Zatwierdzone memy',
-      'series': [
-        {
-          'name': '2018-10-17',
-          'value': 4
-        },
-        {
-          'name': '2018-10-18',
-          'value': 0
-        },
-        {
-          'name': '2018-10-19',
-          'value': 1
-        },
-        {
-          'name': '2018-10-20',
-          'value': 10
-        },
-        {
-          'name': '2018-10-21',
-          'value': 4
-        },
-        {
-          'name': '2018-10-22',
-          'value': 0
-        },
-        {
-          'name': '2018-10-23',
-          'value': 1
-        },
-        {
-          'name': '2018-10-24',
-          'value': 10
-        },
-        {
-          'name': '2018-10-25',
-          'value': 1
-        },
-        {
-          'name': '2018-10-26',
-          'value': 10
-        }
-      ]
-    }
-  ];
+  memeActivated = [];
   memeRates: any = {};
   viewBar: any[] = [200, 400];
   viewLine: any[] = [1000, 400];
@@ -102,7 +56,13 @@ export class AdministrationComponent implements OnInit, OnDestroy {
   loadApprovedMemesChartData() {
     this.memesService.getDateToNumberOfApprovedMemes().subscribe(
       (res: HttpResponse<any>) => {
-        // this.memeActivated = res.body;
+        const resData = res.body;
+        this.memeActivated = [
+          {
+            name: 'Zatwierdzone memy',
+            series: resData
+          }
+        ];
       },
       (res: HttpErrorResponse) => this.onError(res.message)
     );
