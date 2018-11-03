@@ -1,3 +1,4 @@
+import { HasAnyAuthorityDirective } from './hasAnyAuthority.directive';
 import { RouterModule } from '@angular/router';
 import { AlertComponent } from './alert/alert.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -15,7 +16,8 @@ import { HttpClientModule } from '@angular/common/http';
       RouterModule
     ],
     declarations: [
-      AlertComponent
+      AlertComponent,
+      HasAnyAuthorityDirective
     ],
     exports: [
       AlertComponent,
@@ -23,7 +25,8 @@ import { HttpClientModule } from '@angular/common/http';
       FormsModule,
       ReactiveFormsModule,
       CommonModule,
-      RouterModule
+      RouterModule,
+      HasAnyAuthorityDirective
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 

@@ -5,6 +5,7 @@ import { Memes } from './memes';
 import { AlertService } from '../../shared/alert/alert.service';
 import { ActivatedRoute } from '@angular/router';
 import { Comments } from './comments';
+import { AuthGuard } from '../../shared/auth.guard';
 
 @Component({
   selector: 'app-detail-meme',
@@ -20,9 +21,12 @@ export class DetailMemeComponent implements OnInit {
   comments: Comments;
 
   private id = +this.route.snapshot.paramMap.get('id');
-  constructor(private memesService: MemesService,
+  constructor(
+    private memesService: MemesService,
     private alertService: AlertService,
-    private route: ActivatedRoute) {}
+    private route: ActivatedRoute,
+    private authenticate: AuthGuard
+    ) {}
 
   loadAll() {
     this.memesService.getSingleApprovedMeme(this.id).subscribe(
@@ -103,6 +107,14 @@ export class DetailMemeComponent implements OnInit {
 
   commentId(index: number, item: Comments) {
     return item.id;
+  }
+
+  isCorrectUser(id: number) {
+    return this.authenticate.hasAnyAuthority().id === id ? true : false;
+  }
+
+  hasAdminAuthority() {
+    return this.authenticate.hasAnyAuthority().group === 'ADMIN' ? true : false;
   }
 
   ngOnInit() {

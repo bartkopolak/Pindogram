@@ -49,7 +49,7 @@ export class RegisterModalComponent implements OnInit {
       .subscribe(
         data => {
           this.alertService.success('Rejestracja zakończona pomyślnie', true);
-          this.router.navigate(['/login']);
+          this.router.navigate(['login']);
           this.activeModal.dismiss('cancel');
         },
         error => {

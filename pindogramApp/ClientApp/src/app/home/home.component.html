@@ -11,7 +11,7 @@
       <div class="btn-rates">
         <button type="button" class="up-vote" [ngClass]="{'active': meme.activeUp}" (click)="upvoteMeme(meme.id)"></button>
         <button type="button" class="down-vote" [ngClass]="{'active': meme.activeDown}" (click)="downvoteMeme(meme.id)"></button>
-        <button type="button" class="delete-button" (click)="deleteMeme(meme)"></button>
+        <button type="button" class="delete-button" (click)="deleteMeme(meme)" *appHasAnyAuthority="'ADMIN'"></button>
       </div>
     </div>
   </div>
