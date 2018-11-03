@@ -1,7 +1,6 @@
 <div class="administration-wrapper">
   <div class="memes-top-view">
     <img src="../../../assets/luftwafe.png" alt="best">
-
   </div>
   <h1>Cuckpit administratoracyjny</h1>
   <ngb-tabset>
@@ -14,6 +13,7 @@
     <ngb-tab>
       <ng-template ngbTabTitle>Zarządzanie memami</ng-template>
       <ng-template ngbTabContent>
+        <br>
         <div class="memes-wrapper" *ngFor="let meme of memes; index as i; trackBy: trackId">
           <span class="meme-index">{{i + 1}}</span>
           <img class="img" [src]="'data:image/jpeg;base64,' + meme.image" alt="img">
@@ -31,7 +31,21 @@
     <ngb-tab>
       <ng-template ngbTabTitle>Raporty</ng-template>
       <ng-template ngbTabContent>
-        <p>Wykresy here</p>
+        <br>
+        <div class="row">
+          <div class="col-2">
+            <h5>Wykres like/dislike</h5>
+            <ngx-charts-bar-vertical [view]="viewBar" [scheme]="colorScheme" [results]="memeRates" [xAxis]="showXAxis"
+              [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [showGridLines]="showGridLines">
+            </ngx-charts-bar-vertical>
+          </div>
+          <div class="col-8">
+            <h5>Wykres zaakceptowanych memów z ostatnich 10 dni</h5>
+            <ngx-charts-line-chart [view]="viewLine" [scheme]="colorScheme" [results]="memeActivated" [xAxis]="showXAxis"
+              [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel">
+            </ngx-charts-line-chart>
+          </div>
+        </div>
       </ng-template>
     </ngb-tab>
   </ngb-tabset>

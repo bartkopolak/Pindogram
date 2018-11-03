@@ -62,6 +62,16 @@ export class MemesService {
         .map((res: HttpResponse<any>) => this.convertArrayResponse(res));
     }
 
+    getNumerOfAllLikesAndDislikes(): Observable<HttpResponse<any>> {
+      return this.http.get<any>(SERVER_API_URL + `/api/Memes/GetNumerOfAllLikesAndDislikes`, { observe: 'response' })
+        .map((res: HttpResponse<any>) => this.convertArrayResponse(res));
+    }
+
+    getDateToNumberOfApprovedMemes(): Observable<HttpResponse<any>> {
+      return this.http.get<any>(SERVER_API_URL + `/api/Memes/GetDateToNumberOfApprovedMemes`, { observe: 'response' })
+        .map((res: HttpResponse<any>) => this.convertArrayResponse(res));
+    }
+
     private convertResponse(res: HttpResponse<Memes>): HttpResponse<Memes> {
       const body: Memes = this.convertItemFromServer(res.body);
       return res.clone({body});
