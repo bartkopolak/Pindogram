@@ -1,6 +1,6 @@
 import { Memes } from './memes';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/observable';
 import { SERVER_API_URL } from '../../app.constants';
 

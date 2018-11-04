@@ -32,6 +32,10 @@
             &.activated{
               background: green;
             }
+            &[disabled]{
+              opacity: 0.6;
+              cursor: not-allowed;
+            }
           }
           .btn-delete-user{
             display: block;
