@@ -203,10 +203,15 @@ namespace pindogramApp.Services
             {
                 throw new AppException($"Nie ma mema o takim Id. Metoda: {nameof(Delete)}");
             }
-            var rates = _context.MemeRates.Where(x => x.MemeId == id);
-            foreach (MemeRate mr in rates)
+            var comments = _context.Comments.Where(x => x.MemeId == id);
+            foreach (var comment in comments)
             {
-                _context.MemeRates.Remove(mr);
+                _context.Comments.Remove(comment);
+            }
+            var rates = _context.MemeRates.Where(x => x.MemeId == id);
+            foreach (var rate in rates)
+            {
+                _context.MemeRates.Remove(rate);
             }
 
             _context.Memes.Remove(meme);
